@@ -63,6 +63,66 @@
             transition: all 0.3s ease; display: inline-block;
         }
         nav a:hover { background-color: var(--base-seminar); color: white; transform: translateY(-2px); }
+		
+		/* --- ここからドロップダウンメニュー用CSS --- */
+
+/* ドロップダウンの親コンテナ（TEACHINGボタンの位置基準） */
+.dropdown {
+    position: relative;
+    display: inline-block;
+}
+
+/* ホバーで浮き上がるメニュー本体 */
+.dropdown-content {
+    visibility: hidden; 
+    opacity: 0;
+    position: absolute;
+    background-color: rgba(255, 255, 255, 0.95); 
+    
+   
+    width: max-content;   /* 箱の幅を、中身の文字の長さにピッタリ合わせる */
+    white-space: nowrap;  /* 文字が長くても途中で改行させない */
+    
+
+    box-shadow: 0 8px 25px rgba(0,0,0,0.15);
+    border-radius: 15px;
+    padding: 10px;
+    z-index: 200;
+    top: 120%; 
+    left: 50%;
+    transform: translateX(-50%) translateY(15px); 
+    transition: all 0.4s cubic-bezier(0.25, 1, 0.5, 1);
+    backdrop-filter: blur(5px);
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+}
+
+/* メニュー内のリンク（既存の nav a の設定を上書きしてリスト化） */
+.dropdown-content a {
+    margin: 0 !important; 
+    box-shadow: none !important; 
+    transform: none !important;
+    border-radius: 10px;
+    padding: 10px 15px;
+    font-size: 0.95rem;
+    text-align: center;
+    background-color: transparent;
+}
+
+/* メニュー内のリンクにホバーした時 */
+.dropdown-content a:hover {
+    background-color: var(--bg-color); /* 優しい背景色 */
+    color: var(--main-accent);
+}
+
+/* 親要素(TEACHING)にホバーした時にメニューを表示 */
+.dropdown:hover .dropdown-content {
+    visibility: visible;
+    opacity: 1;
+    transform: translateX(-50%) translateY(0); /* 定位置へスッと移動 */
+}
+/* --- ここまで --- */
 
         /* --- メインコンテンツ --- */
         .container {
@@ -173,6 +233,49 @@
             .text-card p { font-size: 1.05rem; }
             nav a { margin: 5px; }
         }
+		
+		
+		
+		/* --- 言語切り替えボタンのデザイン --- */
+.lang-toggle {
+    font-family: var(--font-family);
+    font-weight: bold;
+    color: #fff;
+    background-color: var(--main-accent);
+    border: none;
+    border-radius: 20px;
+    padding: 8px 16px;
+    margin-left: 15px;
+    cursor: pointer;
+    box-shadow: 0 4px 10px rgba(211, 84, 0, 0.3);
+    transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+.lang-toggle:hover {
+    transform: translateY(-3px) scale(1.05);
+    box-shadow: 0 6px 15px rgba(211, 84, 0, 0.4);
+}
+
+/* --- 言語の表示・非表示ルール --- */
+/* デフォルト状態（日本語モード）: 英語を隠す */
+.lang-en { 
+    display: none; 
+}
+
+/* 英語モード (bodyに 'is-en' クラスが付いた時): 日本語を隠し、英語を表示する */
+body.is-en .lang-ja { 
+    display: none; 
+}
+body.is-en .lang-en { 
+    display: inline; /* もしくは block（要素に合わせて） */
+}
+
+/* （おまけ）英語モードの時は、全体のフォントサイズを少し調整すると綺麗です */
+body.is-en {
+    font-size: 1.05rem;
+    letter-spacing: 0.02em;
+}
+
     </style>
 </head>
 <body>
@@ -180,40 +283,56 @@
     <div class="bg-bubbles" id="bubbles"></div>
 
     <header>
-        <h1 class="site-title">Akitaka Yamada's Website</h1>
-        <p class="site-subtitle">山田彬尭のウェブサイトへようこそ！</p>
+		
+        <span class="lang-en"><h1 class="site-title">Akitaka Yamada's Website</h1></span>
+        <span class="lang-ja"><p class="site-title">山田彬尭のウェブサイトへようこそ！</p></span>
         <nav>
+				
             <a href="https://ayamada.sfc.keio.ac.jp/">TOP</a>
             <a href="https://ayamada.sfc.keio.ac.jp/publications">PUBLICATIONS</a>
             <a href="https://ayamada.sfc.keio.ac.jp/cv">CV</a>
-			<a href = "https://ayamada.sfc.keio.ac.jp/%E8%A4%87%E8%A3%BD-issues-in-theoretical-linguistics-1">TEACHING</a>
+			<div class="dropdown">
+				<a href="https://ayamada.sfc.keio.ac.jp/%E8%A4%87%E8%A3%BD-issues-in-theoretical-linguistics-1">TEACHING ▾</a>
+					<div class="dropdown-content">
+						<a href="#"><span class="lang-ja">音声学・音韻論・形態論<br>（Project Eng C）</span> <span class="lang-en">Phonetics, Phonology, and Morphology (GIGA)</span> </a>
+						<a href="https://keiosfc-aki2025.github.io/syntax/schedule.html"><span class="lang-ja">統語論</span><span class="lang-en">Syntax</span> (GIGA)</a>
+						<a href="https://keiosfc-aki2025.github.io/semantics-and-pragmatics/schedule.html"><span class="lang-ja">意味論・語用論</span> <span class="lang-en">Semantics and Pragmatics</span></a>
+					</div>
+			</div>
+		
+			
             <a href="https://keiosfc-aki2025.github.io/Seminar/SeminarProfile.html">SEMINARS</a>
             <a href="https://ayamada.sfc.keio.ac.jp/contact">CONTACT</a>
+			<button id="lang-btn" class="lang-toggle">English</button>
         </nav>
+		
     </header>
 
     <main class="container">
-        <h2 class="page-title fade-in-section">二つの研究会の位置づけ</h2>
+        <h2 class="page-title fade-in-section">
+		<span class="lang-ja">二つの研究会の位置づけ</span>
+		<span class="lang-en">Two Seminars, One Vision</span>
+		</h2>
 
         <div class="text-card fade-in-section">
-            <p>「理論言語学」という広大な学問分野があります。
-			<span class="en-sub">Theoretical Linguistics is a vast and profound academic field.</span>
+            <p><span class="lang-ja">「理論言語学」という広大な学問分野があります。</span>
+			<span class="lang-en">Theoretical Linguistics is a vast and profound academic field.</span>
 			</p>
 			
-            <p>「言語学」と聞くと、勘違いされることが多いのですが、これは、語学のエキスパートを要請する学問分野ではありません。もちろん、「英語の勉強が楽しいから」この分野の研究者になったという人も多くいるのですが、いわゆる<span class="marker">語学オタクになるためにある学問分野というわけではない</span>んです。
-			<span class="en-sub">People sometimes come in like, “Oh, this is where you go if you wanna learn to speak a bunch of languages, right?” <span class="marker">Not really</span>. That’s kind of a common misconception people have about linguistics.
+            <p><span class="lang-ja">「言語学」と聞くと、勘違いされることが多いのですが、これは、語学のエキスパートを要請する学問分野ではありません。もちろん、「英語の勉強が楽しいから」この分野の研究者になったという人も多くいるのですが、いわゆる<span class="marker">語学オタクになるためにある学問分野というわけではない</span>んです。</span>
+			<span class="lang-en">People sometimes come in like, “Oh, this is where you go if you wanna learn to speak a bunch of languages, right?” <span class="marker">Not really</span>. That’s kind of a common misconception people have about linguistics.
 			Sure, a lot of people get into it because they enjoy studying languages like English, but it’s not really about becoming a hardcore language nerd.</span>
 			</p>
-            <p>じゃあ、いったいここは何を研究する場所なのでしょうか。実は、理論言語学とは、ことばを分析しながら、<span class="marker" style="background-image: linear-gradient(transparent 60%, #ffb7c5 60%);">それを操る人間の不思議を研究する科学</span>の一分野です。
-			<span class="en-sub">So then what do we actually study here? Well, theoretical linguistics is basically <span class="marker" style="background-image: linear-gradient(transparent 60%, #ffb7c5 60%);"> a branch of science that tries to understand the human mind</span> by analyzing language and how we use it.</span>
+            <p><span class="lang-ja">じゃあ、いったいここは何を研究する場所なのでしょうか。実は、理論言語学とは、ことばを分析しながら、<span class="marker" style="background-image: linear-gradient(transparent 60%, #ffb7c5 60%);">それを操る人間の不思議を研究する科学</span>の一分野です。</span>
+			<span class="lang-en">So then what do we actually study here? Well, theoretical linguistics is basically <span class="marker" style="background-image: linear-gradient(transparent 60%, #ffb7c5 60%);"> a branch of science that tries to understand the human mind</span> by analyzing language and how we use it.</span>
 			
 			
 			</p>
         </div>
 
         <div class="text-card fade-in-section" style="border-color: #aed581; background: #fbfff4;">
-            <p>伝統も厚く、色々な学問分野との交流も豊かで、とてもやりがいのある面白い研究分野なんです！だって、みなさん、人間ほど複雑で豊かなコミュニケーション・システムを持つ動物って知らないですよね。人間（ヒト）の言葉っていったいどういう仕組みになっているのでしょうか、そんなこと考え始めたら、<span class="marker" style="background-image: linear-gradient(transparent 60%, #ffcc80 60%); color: #e65100;">とってもワクワクするじゃないですか！</span> 😆
-			<span class="en-sub">
+            <p><span class="lang-ja">伝統も厚く、色々な学問分野との交流も豊かで、とてもやりがいのある面白い研究分野なんです！だって、みなさん、人間ほど複雑で豊かなコミュニケーション・システムを持つ動物って知らないですよね。人間（ヒト）の言葉っていったいどういう仕組みになっているのでしょうか、そんなこと考え始めたら、<span class="marker" style="background-image: linear-gradient(transparent 60%, #ffcc80 60%); color: #e65100;">とってもワクワクするじゃないですか！</span> 😆</span>
+			<span class="lang-en">
 			It’s got a long tradition, it connects with all kinds of other fields, and honestly, it’s a super fun and rewarding area to study. I mean, think about it—there’s no other animal out there with a communication system as complex and rich as humans, right? Once you start wondering how human language actually works, it gets <span class="marker" style="background-image: linear-gradient(transparent 60%, #ffcc80 60%); color: #e65100;">pretty exciting</span>, doesn’t it?</span>
 			
 			
@@ -222,19 +341,19 @@
         </div>
 
         <div class="text-card fade-in-section">
-            <p>さて、そんな理論言語学という分野で、私（山田彬尭）は研究を進めているのですが、この研究の過程で、しばしば自分の強みとして織り交ぜているのが、<span class="marker" style="background-image: linear-gradient(transparent 60%, #a5d6a7 90%);">言語実験や大規模コーパスの解析などの定量的な視点</span>です。理論言語学で蓄積されてきた定性的な議論をしっかり味わうって、でもそれだけじゃなくて、質的な議論ではなかなか見えてこなかった細やかな特徴を統計モデリングを通して拾い上げる、そういう実践をしています。
-			<span class="en-sub">That’s the kind of field I work in, and, there is one important practice characterizing my research---a hybird perspective emcompassing not only a <span class="marker" style="background-image: linear-gradient(transparent 60%, #a5d6a7 69%);">qualitative but also a quantitative data analysis</span>, like running language experiments or working with large corpora. 
+            <p><span class="lang-ja">さて、そんな理論言語学という分野で、私（山田彬尭）は研究を進めているのですが、この研究の過程で、しばしば自分の強みとして織り交ぜているのが、<span class="marker" style="background-image: linear-gradient(transparent 60%, #a5d6a7 90%);">言語実験や大規模コーパスの解析などの定量的な視点</span>です。理論言語学で蓄積されてきた定性的な議論をしっかり味わうって、でもそれだけじゃなくて、質的な議論ではなかなか見えてこなかった細やかな特徴を統計モデリングを通して拾い上げる、そういう実践をしています。</span>
+			<span class="lang-en">That’s the kind of field I work in, and, there is one important practice characterizing my research---a hybird perspective emcompassing not only a <span class="marker" style="background-image: linear-gradient(transparent 60%, #a5d6a7 69%);">qualitative but also a quantitative data analysis</span>, like running language experiments or working with large corpora. 
 			</span>
 			</p>
 			
 			
-            <p>私が開催するこの二つの研究会でも、そういった理論言語学と呼ばれる学問分野に、<b>学際的、分野横断的な視点</b>を取り入れて、発展させていきたいという人たちがメインで集まる場所にしたいなと思っています。
-			<span class="en-sub">I really value the kind of careful, qualitative insights that theoretical linguistics has built up over time—but I don’t want to stop there. With statistical modeling, you can start to pick up on subtle patterns that are hard to see through qualitative analysis alone.
+            <p><span class="lang-ja">私が開催するこの二つの研究会でも、そういった理論言語学と呼ばれる学問分野に、<b>学際的、分野横断的な視点</b>を取り入れて、発展させていきたいという人たちがメインで集まる場所にしたいなと思っています。</span>
+			<span class="lang-en">I really value the kind of careful, qualitative insights that theoretical linguistics has built up over time—but I don’t want to stop there. With statistical modeling, you can start to pick up on subtle patterns that are hard to see through qualitative analysis alone.
 			</span>
 			</p>
 			
-			<p>そこで、私の研究実践を反映して、研究会（ゼミ）も二本立てです。<span class="marker" style="background-image: linear-gradient(transparent 60%, #f8bbd0 90%);">伝統的な言語学</span>を学ぶ「理論言語学実践」と、<span class="marker" style="background-image: linear-gradient(transparent 60%, #81d4fa 90%);">発展的なデジタルヒューマニティーズ的視点</span>を取り入れた「言語×DH×FW」を用意しています。
-			<span class="en-sub">So, reflecting how I actually do research, the seminar is split into two tracks. One is “Theoretical Linguistics in Practice,” where we dig into the more <span class="marker" style="background-image: linear-gradient(transparent 60%, #f8bbd0 90%);">traditional</span> side of the field, and the other is “Language × DH × FW,” which brings in a more <span class="marker" style="background-image: linear-gradient(transparent 60%, #81d4fa 90%);">quantitative, digital humanities–style</span> perspective.
+			<p><span class="lang-ja">そこで、私の研究実践を反映して、研究会（ゼミ）も二本立てです。<span class="marker" style="background-image: linear-gradient(transparent 60%, #f8bbd0 90%);">伝統的な言語学</span>を学ぶ「理論言語学実践」と、<span class="marker" style="background-image: linear-gradient(transparent 60%, #81d4fa 90%);">発展的なデジタルヒューマニティーズ的視点</span>を取り入れた「言語×DH×FW」を用意しています。</span>
+			<span class="lang-en">So, reflecting how I actually do research, the seminar is split into two tracks. One is “Theoretical Linguistics in Practice,” where we dig into the more <span class="marker" style="background-image: linear-gradient(transparent 60%, #f8bbd0 90%);">traditional</span> side of the field, and the other is “Language × DH × FW,” which brings in a more <span class="marker" style="background-image: linear-gradient(transparent 60%, #81d4fa 90%);">quantitative, digital humanities–style</span> perspective.
 			</span>
 			
 			</p>
@@ -245,25 +364,41 @@
             <a href="TeamProfile.html" class="seminar-card base">
                 <div class="badge">TRADITION</div>
                 <div class="card-icon">📖</div>
-                <h3 class="card-title">理論言語学実践</h3>
-                <p class="card-desc">伝統的な理論言語学の枠組みを学びながら、<br>議論を行います。<br><br><b>伝統を押さえる基盤</b>となる研究会です。</p>
+                <h3 class="card-title"><span class="lang-ja">理論言語学実践</span><span class="lang-en">Practice in Theoretical Linguistics</span></h3>
+                <p class="card-desc"><span class="lang-ja">伝統的な理論言語学の枠組みを学びながら、<br>議論を行います。<br><br><b>伝統を押さえる基盤</b>となる研究会です。</span>
+				<span class="lang-en">
+				While learning the core frameworks of traditional theoretical linguistics,<br>we’ll also engage in active discussion.<br><br>This seminar serves as a <b>foundation for mastering the tradition</b>.
+				</span>
+				</p>
             </a>
 
-            <a href="#" class="seminar-card advance">
+            <a href="https://keiosfc-aki2025.github.io/Seminar-B-Practice-in-Theoretical-Linguistics/TeamProfile.html" class="seminar-card advance">
                 <div class="badge">INNOVATION</div>
                 <div class="card-icon">💻🧭</div>
-                <h3 class="card-title">言語×DH×FW</h3>
-                <p class="card-desc">統計モデリングをベースに<br>フィールドワークを交えながら量的に分析。<br><br><b>伝統の殻を破る応用</b>を目的とした研究会です。</p>
+                <h3 class="card-title"><span class="lang-ja">言語×DH×FW</span><span class="lang-en">Language, Digital Humanities and Fieldwork</span></h3>
+                <p class="card-desc"><span class="lang-ja">
+				統計モデリングをベースに<br>フィールドワークを交えながら量的に分析。<br><br><b>伝統の殻を破る応用</b>を目的とした研究会です。</span><span class="lang-en">We take a quantitative approach grounded in statistical modeling, combining it with fieldwork to analyze language data.<br><br>This seminar is all about <b>pushing beyond the boundaries of tradition</b>.</span></p>
             </a>
         </div>
 
         <div class="text-card fade-in-section" style="margin-top: 3rem; text-align: center; border: none; background: transparent; box-shadow: none;">
-            <p>このように、二つの研究会は、大きなところでつながりながら、少し違っています。</p>
+            <span class="lang-ja"><p>このように、二つの研究会は、大きなところでつながりながら、少し違っています。</p>
             <p style="font-size: 1.3rem; font-weight: bold; color: var(--main-accent);">
                 どっぷりこの世界につかりたいなら、<span style="border-bottom: 3px solid #ffeb3b;">両方</span>を。<br>
                 創発的な異文化融合を目指すのなら、<span style="border-bottom: 3px solid #ffeb3b;">どちらか一方</span>を。
             </p>
             <p>履修して、自分のキャリア形成に大きくつなげていってください！✨</p>
+			
+			</span>
+			<span class="lang-en"><p>So, as you can see, the two seminars are closely connected at a high level, but they each have their own flavor.</p>
+<p style="font-size: 1.3rem; font-weight: bold; color: var(--main-accent);">
+    If you really want to dive deep into this world, go for <span style="border-bottom: 3px solid #ffeb3b;">both</span>.<br>
+    If you're aiming for something more exploratory, try <span style="border-bottom: 3px solid #ffeb3b;">just one</span>.
+</p>
+<p>Take them, and make them a meaningful part of shaping your academic/career path! ✨</p>
+</span>
+			
+			
         </div>
 
     </main>
@@ -304,6 +439,23 @@
                 bubbleContainer.appendChild(bubble);
             }
         });
+		
+		
+		// --- 言語切り替え機能 ---
+const langBtn = document.getElementById('lang-btn');
+
+langBtn.addEventListener('click', function() {
+    // bodyタグに 'is-en' クラスを付け外しする
+    document.body.classList.toggle('is-en');
+    
+    // クラスの状態を見て、ボタンのテキストを切り替える
+    if (document.body.classList.contains('is-en')) {
+        langBtn.textContent = '日本語'; // 英語表示の時は「日本語」に戻すボタンにする
+    } else {
+        langBtn.textContent = 'English'; // 日本語表示の時は「English」にする
+    }
+});
+
     </script>
 </body>
 </html>
