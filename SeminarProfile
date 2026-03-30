@@ -1,0 +1,276 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>二つの研究会の位置づけ - Akitaka Yamada's Website</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Zen+Maru+Gothic:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+        /* --- 基本設定 --- */
+        :root {
+            --font-family: 'Zen Maru Gothic', sans-serif;
+            --bg-color: #fcefee;
+            --text-color: #5a4a42;
+            --main-accent: #d35400;
+            --base-seminar: #ffb7c5; /* 春・桜のような色 */
+            --adv-seminar: #4fc3f7;  /* 夏・海のような色 */
+        }
+        
+        body {
+            font-family: var(--font-family);
+            color: var(--text-color);
+            margin: 0; 
+            padding: 0; 
+            line-height: 1.8;
+            background-image: linear-gradient(135deg, #fcefee 0%, #fcf4e0 100%);
+            background-attachment: fixed;
+            overflow-x: hidden;
+        }
+
+        /* --- 動的な背景装飾 --- */
+        .bg-bubbles {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            z-index: -1; pointer-events: none; overflow: hidden;
+        }
+        .bubble {
+            position: absolute; border-radius: 50%;
+            background: rgba(255, 255, 255, 0.4);
+            animation: floatUp 15s infinite linear;
+        }
+        @keyframes floatUp {
+            0% { transform: translateY(100vh) scale(0.5); opacity: 0; }
+            20% { opacity: 1; }
+            100% { transform: translateY(-20vh) scale(1.5); opacity: 0; }
+        }
+
+        /* --- ヘッダー（既存踏襲） --- */
+        header {
+            text-align: center; padding: 2rem 1rem;
+            background-color: rgba(255, 255, 255, 0.7);
+            backdrop-filter: blur(10px);
+            border-bottom: 3px dotted var(--base-seminar);
+            position: sticky; top: 0; z-index: 100;
+        }
+        .site-title { font-size: 2.5rem; font-weight: bold; margin: 0; color: var(--main-accent); text-shadow: 2px 2px 4px rgba(0,0,0,0.1); }
+        .site-subtitle { font-size: 1.2rem; margin-top: 0.5rem; color: #7f8c8d; }
+        nav { margin-top: 1.5rem; }
+        nav a {
+            text-decoration: none; color: var(--text-color); font-weight: bold;
+            margin: 0 10px; padding: 8px 16px; border-radius: 20px;
+            background-color: #fff; box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+            transition: all 0.3s ease; display: inline-block;
+        }
+        nav a:hover { background-color: var(--base-seminar); color: white; transform: translateY(-2px); }
+
+        /* --- メインコンテンツ --- */
+        .container {
+            max-width: 900px; margin: 3rem auto; padding: 0 2rem;
+        }
+
+        .page-title {
+            text-align: center; font-size: 2.2rem; color: var(--main-accent);
+            margin-bottom: 3rem; position: relative;
+            display: inline-block; left: 50%; transform: translateX(-50%);
+        }
+        .page-title::after {
+            content: '✨'; position: absolute; top: -15px; right: -30px;
+            font-size: 1.5rem; animation: sparkle 2s infinite alternate;
+        }
+        @keyframes sparkle { 0% { transform: scale(1) rotate(0deg); opacity: 0.7; } 100% { transform: scale(1.3) rotate(20deg); opacity: 1; } }
+
+        /* スクロールフェードイン用クラス */
+        .fade-in-section {
+            opacity: 0; transform: translateY(40px);
+            transition: opacity 0.8s cubic-bezier(0.25, 1, 0.5, 1), transform 0.8s cubic-bezier(0.25, 1, 0.5, 1);
+            margin-bottom: 3rem;
+        }
+        .fade-in-section.is-visible {
+            opacity: 1; transform: translateY(0);
+        }
+
+        /* --- テキストカード（吹き出し・手紙風） --- */
+        .text-card {
+            background: #fff; border-radius: 20px; padding: 2.5rem;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.05);
+            position: relative; border: 2px dashed #e0d4c8;
+        }
+        .text-card p { font-size: 1.15rem; margin-bottom: 1.5rem; letter-spacing: 0.03em; }
+        .text-card p:last-child { margin-bottom: 0; }
+        
+        /* マーカーアニメーション */
+        .marker {
+            background-image: linear-gradient(transparent 60%, #ffeb3b 60%);
+            background-repeat: no-repeat;
+            background-size: 0% 100%;
+            transition: background-size 1s cubic-bezier(0.25, 1, 0.5, 1);
+            transition-delay: 0.3s; /* フェードインの後に引く */
+            font-weight: bold;
+        }
+        .is-visible .marker { background-size: 100% 100%; }
+
+        /* --- 研究会リンクエリア（大きなボタン） --- */
+        .seminar-links {
+            display: grid; grid-template-columns: 1fr 1fr; gap: 2rem; margin-top: 4rem;
+        }
+        
+        .seminar-card {
+            display: flex; flex-direction: column; align-items: center; justify-content: center;
+            text-decoration: none; color: var(--text-color);
+            background: #fff; border-radius: 30px; padding: 3rem 2rem;
+            box-shadow: 0 15px 35px rgba(0,0,0,0.08);
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            position: relative; overflow: hidden; text-align: center;
+        }
+        
+        .seminar-card.base { border-bottom: 8px solid var(--base-seminar); }
+        .seminar-card.advance { border-bottom: 8px solid var(--adv-seminar); }
+
+        .seminar-card::before {
+            content: ''; position: absolute; top: 0; left: 0; width: 100%; height: 100%;
+            background: linear-gradient(135deg, rgba(255,255,255,0.8), rgba(255,255,255,0));
+            z-index: 1; opacity: 0; transition: opacity 0.3s;
+        }
+
+        .seminar-card:hover {
+            transform: translateY(-10px) scale(1.02);
+            box-shadow: 0 25px 50px rgba(0,0,0,0.15);
+        }
+        .seminar-card:hover::before { opacity: 1; }
+
+        .card-icon {
+            font-size: 4rem; margin-bottom: 1rem; position: relative; z-index: 2;
+            transition: transform 0.5s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+        }
+        .seminar-card:hover .card-icon { transform: scale(1.2) rotate(5deg); }
+
+        .card-title {
+            font-size: 1.6rem; font-weight: bold; margin: 0 0 1rem 0; z-index: 2; position: relative;
+        }
+        .seminar-card.base .card-title { color: #d81b60; }
+        .seminar-card.advance .card-title { color: #0277bd; }
+
+        .card-desc {
+            font-size: 1rem; color: #666; z-index: 2; position: relative; margin: 0; line-height: 1.5;
+        }
+
+        /* 装飾バッジ */
+        .badge {
+            position: absolute; top: 20px; right: -30px; background: #fff; font-weight: bold;
+            padding: 5px 40px; transform: rotate(45deg); font-size: 0.8rem; z-index: 3;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+        .seminar-card.base .badge { background: var(--base-seminar); color: #fff; }
+        .seminar-card.advance .badge { background: var(--adv-seminar); color: #fff; }
+
+        @media (max-width: 768px) {
+            .seminar-links { grid-template-columns: 1fr; }
+            .site-title { font-size: 1.8rem; }
+            .text-card p { font-size: 1.05rem; }
+            nav a { margin: 5px; }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="bg-bubbles" id="bubbles"></div>
+
+    <header>
+        <h1 class="site-title">Akitaka Yamada's Website</h1>
+        <p class="site-subtitle">山田彬尭のウェブサイトへようこそ！</p>
+        <nav>
+            <a href="#">TOP</a>
+            <a href="#">PUBLICATIONS</a>
+            <a href="#">CV</a>
+            <a href="#">TEACHING</a>
+            <a href="#">SEMINARS</a>
+            <a href="#">CONTACT</a>
+        </nav>
+    </header>
+
+    <main class="container">
+        <h2 class="page-title fade-in-section">二つの研究会の位置づけ</h2>
+
+        <div class="text-card fade-in-section">
+            <p>「理論言語学」という広大な学問分野があります。</p>
+            <p>「言語学」と聞くと、勘違いされることが多いのですが、これは、語学のエキスパートを要請する学問分野ではありません。もちろん、「英語の勉強が楽しいから」この分野の研究者になったという人も多くいるのですが、いわゆる<span class="marker">語学オタクになるためにある学問分野というわけではない</span>んです。</p>
+            <p>じゃあ、いったいここは何を研究する場所なのでしょうか。実は、理論言語学とは、ことばを分析しながら、<span class="marker" style="background-image: linear-gradient(transparent 60%, #ffb7c5 60%);">それを操る人間の不思議を研究する科学</span>の一分野です。</p>
+        </div>
+
+        <div class="text-card fade-in-section" style="border-color: #aed581; background: #fbfff4;">
+            <p>伝統も厚く、色々な学問分野との交流も豊かで、とてもやりがいのある面白い研究分野なんです！</p>
+            <p>だって、みなさん、人間ほど複雑で豊かなコミュニケーション・システムを持つ動物って知らないですよね。人間（ヒト）の言葉っていったいどういう仕組みになっているのでしょうか、そんなこと考え始めたら、<span class="marker" style="background-image: linear-gradient(transparent 60%, #ffcc80 60%); color: #e65100;">とってもワクワクするじゃないですか！</span> 😆</p>
+        </div>
+
+        <div class="text-card fade-in-section">
+            <p>さて、そんな理論言語学という分野で、私（山田彬尭）は研究を進めているのですが、この研究の過程で、しばしば自分の強みとして織り交ぜているのが、<span class="marker" style="background-image: linear-gradient(transparent 60%, #81d4fa 60%);">言語実験や大規模コーパスの解析などの定量的な視点</span>です。</p>
+            <p>そこで、二つの研究会は、そういった理論言語学と呼ばれる学問分野に、何か<b>学際的、分野横断的な視点</b>を取り入れて、発展させていきたいという人たちがメインで集まる場所にしたいなと思っています。</p>
+        </div>
+
+        <div class="seminar-links fade-in-section">
+            <a href="TeamProfile.html" class="seminar-card base">
+                <div class="badge">TRADITION</div>
+                <div class="card-icon">📖</div>
+                <h3 class="card-title">理論言語学実践</h3>
+                <p class="card-desc">伝統的な理論言語学の枠組みを学びながら、議論を行います。<br><b>伝統を押さえる基盤</b>となる研究会です。</p>
+            </a>
+
+            <a href="#" class="seminar-card advance">
+                <div class="badge">INNOVATION</div>
+                <div class="card-icon">💻🧭</div>
+                <h3 class="card-title">言語×DH×FW</h3>
+                <p class="card-desc">デジタル技術をフィールドワークを交えながら会得。<br><b>伝統の殻を破っていく応用</b>を目的とした研究会です。</p>
+            </a>
+        </div>
+
+        <div class="text-card fade-in-section" style="margin-top: 3rem; text-align: center; border: none; background: transparent; box-shadow: none;">
+            <p>このように、二つの研究会は、大きなところでつながりながら、少し違っています。</p>
+            <p style="font-size: 1.3rem; font-weight: bold; color: var(--main-accent);">
+                どっぷりこの世界につかりたいなら、<span style="border-bottom: 3px solid #ffeb3b;">両方</span>を。<br>
+                創発的な異文化融合を目指すのなら、<span style="border-bottom: 3px solid #ffeb3b;">どちらか一方</span>を。
+            </p>
+            <p>履修して、自分のキャリア形成に大きくつなげていってください！✨</p>
+        </div>
+
+    </main>
+
+    <script>
+        // --- スクロール連動フェードイン＆マーカーアニメーション ---
+        document.addEventListener("DOMContentLoaded", function() {
+            const observerOptions = {
+                root: null,
+                rootMargin: '0px 0px -10% 0px', // 少し画面に入ってから発火
+                threshold: 0.1
+            };
+
+            const observer = new IntersectionObserver((entries, observer) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add('is-visible');
+                        observer.unobserve(entry.target); // 一度発火したら監視をやめる
+                    }
+                });
+            }, observerOptions);
+
+            const sections = document.querySelectorAll('.fade-in-section');
+            sections.forEach(sec => observer.observe(sec));
+
+            // --- 背景の泡をランダム生成 ---
+            const bubbleContainer = document.getElementById('bubbles');
+            for (let i = 0; i < 15; i++) {
+                let bubble = document.createElement('div');
+                bubble.classList.add('bubble');
+                // ランダムなサイズ、位置、アニメーション遅延を設定
+                let size = Math.random() * 60 + 20 + 'px';
+                bubble.style.width = size;
+                bubble.style.height = size;
+                bubble.style.left = Math.random() * 100 + 'vw';
+                bubble.style.animationDuration = Math.random() * 10 + 10 + 's';
+                bubble.style.animationDelay = Math.random() * 5 + 's';
+                bubbleContainer.appendChild(bubble);
+            }
+        });
+    </script>
+</body>
+</html>
