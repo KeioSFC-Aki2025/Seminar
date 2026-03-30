@@ -68,7 +68,10 @@
         .container {
             max-width: 900px; margin: 3rem auto; padding: 0 2rem;
         }
-
+		.en-sub {
+            display: block; font-size: 0.9rem; color: var(--en-text-color);
+            margin-top: 0.3rem; line-height: 1.4; font-weight: normal;
+        }
         .page-title {
             text-align: center; font-size: 2.2rem; color: var(--main-accent);
             margin-bottom: 3rem; position: relative;
@@ -193,19 +196,49 @@
         <h2 class="page-title fade-in-section">二つの研究会の位置づけ</h2>
 
         <div class="text-card fade-in-section">
-            <p>「理論言語学」という広大な学問分野があります。</p>
-            <p>「言語学」と聞くと、勘違いされることが多いのですが、これは、語学のエキスパートを要請する学問分野ではありません。もちろん、「英語の勉強が楽しいから」この分野の研究者になったという人も多くいるのですが、いわゆる<span class="marker">語学オタクになるためにある学問分野というわけではない</span>んです。</p>
-            <p>じゃあ、いったいここは何を研究する場所なのでしょうか。実は、理論言語学とは、ことばを分析しながら、<span class="marker" style="background-image: linear-gradient(transparent 60%, #ffb7c5 60%);">それを操る人間の不思議を研究する科学</span>の一分野です。</p>
+            <p>「理論言語学」という広大な学問分野があります。
+			<span class="en-sub">Theoretical Linguistics is a vast and profound academic field.</span>
+			</p>
+			
+            <p>「言語学」と聞くと、勘違いされることが多いのですが、これは、語学のエキスパートを要請する学問分野ではありません。もちろん、「英語の勉強が楽しいから」この分野の研究者になったという人も多くいるのですが、いわゆる<span class="marker">語学オタクになるためにある学問分野というわけではない</span>んです。
+			<span class="en-sub">People sometimes come in like, “Oh, this is where you go if you wanna learn to speak a bunch of languages, right?” <span class="marker">Not really</span>. That’s kind of a common misconception people have about linguistics.
+			Sure, a lot of people get into it because they enjoy studying languages like English, but it’s not really about becoming a hardcore language nerd.</span>
+			</p>
+            <p>じゃあ、いったいここは何を研究する場所なのでしょうか。実は、理論言語学とは、ことばを分析しながら、<span class="marker" style="background-image: linear-gradient(transparent 60%, #ffb7c5 60%);">それを操る人間の不思議を研究する科学</span>の一分野です。
+			<span class="en-sub">So then what do we actually study here? Well, theoretical linguistics is basically <span class="marker" style="background-image: linear-gradient(transparent 60%, #ffb7c5 60%);"> a branch of science that tries to understand the human mind</span> by analyzing language and how we use it.</span>
+			
+			
+			</p>
         </div>
 
         <div class="text-card fade-in-section" style="border-color: #aed581; background: #fbfff4;">
-            <p>伝統も厚く、色々な学問分野との交流も豊かで、とてもやりがいのある面白い研究分野なんです！</p>
-            <p>だって、みなさん、人間ほど複雑で豊かなコミュニケーション・システムを持つ動物って知らないですよね。人間（ヒト）の言葉っていったいどういう仕組みになっているのでしょうか、そんなこと考え始めたら、<span class="marker" style="background-image: linear-gradient(transparent 60%, #ffcc80 60%); color: #e65100;">とってもワクワクするじゃないですか！</span> 😆</p>
+            <p>伝統も厚く、色々な学問分野との交流も豊かで、とてもやりがいのある面白い研究分野なんです！だって、みなさん、人間ほど複雑で豊かなコミュニケーション・システムを持つ動物って知らないですよね。人間（ヒト）の言葉っていったいどういう仕組みになっているのでしょうか、そんなこと考え始めたら、<span class="marker" style="background-image: linear-gradient(transparent 60%, #ffcc80 60%); color: #e65100;">とってもワクワクするじゃないですか！</span> 😆
+			<span class="en-sub">
+			It’s got a long tradition, it connects with all kinds of other fields, and honestly, it’s a super fun and rewarding area to study. I mean, think about it—there’s no other animal out there with a communication system as complex and rich as humans, right? Once you start wondering how human language actually works, it gets <span class="marker" style="background-image: linear-gradient(transparent 60%, #ffcc80 60%); color: #e65100;">pretty exciting</span>, doesn’t it?</span>
+			
+			
+			
+			</p>
         </div>
 
         <div class="text-card fade-in-section">
-            <p>さて、そんな理論言語学という分野で、私（山田彬尭）は研究を進めているのですが、この研究の過程で、しばしば自分の強みとして織り交ぜているのが、<span class="marker" style="background-image: linear-gradient(transparent 60%, #81d4fa 60%);">言語実験や大規模コーパスの解析などの定量的な視点</span>です。</p>
-            <p>そこで、二つの研究会は、そういった理論言語学と呼ばれる学問分野に、何か<b>学際的、分野横断的な視点</b>を取り入れて、発展させていきたいという人たちがメインで集まる場所にしたいなと思っています。</p>
+            <p>さて、そんな理論言語学という分野で、私（山田彬尭）は研究を進めているのですが、この研究の過程で、しばしば自分の強みとして織り交ぜているのが、<span class="marker" style="background-image: linear-gradient(transparent 60%, #a5d6a7 90%);">言語実験や大規模コーパスの解析などの定量的な視点</span>です。理論言語学で蓄積されてきた定性的な議論をしっかり味わうって、でもそれだけじゃなくて、質的な議論ではなかなか見えてこなかった細やかな特徴を統計モデリングを通して拾い上げる、そういう実践をしています。
+			<span class="en-sub">That’s the kind of field I work in, and, there is one important practice characterizing my research---a hybird perspective emcompassing not only a <span class="marker" style="background-image: linear-gradient(transparent 60%, #a5d6a7 69%);">qualitative but also a quantitative data analysis</span>, like running language experiments or working with large corpora. 
+			</span>
+			</p>
+			
+			
+            <p>私が開催するこの二つの研究会でも、そういった理論言語学と呼ばれる学問分野に、<b>学際的、分野横断的な視点</b>を取り入れて、発展させていきたいという人たちがメインで集まる場所にしたいなと思っています。
+			<span class="en-sub">I really value the kind of careful, qualitative insights that theoretical linguistics has built up over time—but I don’t want to stop there. With statistical modeling, you can start to pick up on subtle patterns that are hard to see through qualitative analysis alone.
+			</span>
+			</p>
+			
+			<p>そこで、私の研究実践を反映して、研究会（ゼミ）も二本立てです。<span class="marker" style="background-image: linear-gradient(transparent 60%, #f8bbd0 90%);">伝統的な言語学</span>を学ぶ「理論言語学実践」と、<span class="marker" style="background-image: linear-gradient(transparent 60%, #81d4fa 90%);">発展的なデジタルヒューマニティーズ的視点</span>を取り入れた「言語×DH×FW」を用意しています。
+			<span class="en-sub">So, reflecting how I actually do research, the seminar is split into two tracks. One is “Theoretical Linguistics in Practice,” where we dig into the more <span class="marker" style="background-image: linear-gradient(transparent 60%, #f8bbd0 90%);">traditional</span> side of the field, and the other is “Language × DH × FW,” which brings in a more <span class="marker" style="background-image: linear-gradient(transparent 60%, #81d4fa 90%);">quantitative, digital humanities–style</span> perspective.
+			</span>
+			
+			</p>
+			
         </div>
 
         <div class="seminar-links fade-in-section">
