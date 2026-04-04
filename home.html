@@ -1,1 +1,2053 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Akitaka Yamada's Website - Home</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Zen+Maru+Gothic:wght@400;700&display=swap" rel="stylesheet">
+	<link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <style>
+        /* --- 変数と基本設定 --- */
+        :root {
+            --gnav-font: 'Zen Maru Gothic', sans-serif;
+            --gnav-bg: #fcefee;
+            --gnav-text: #5a4a42;
+            --gnav-accent: #d35400;
+            --gnav-hover: #ffb7c5;
+            --font-family: 'Zen Maru Gothic', sans-serif;
+            --bg-color: #fcefee;
+            --text-color: #5a4a42;
+            --spring-color: #ffb7c5; --spring-bg: #fff0f5;
+            --summer-color: #4fc3f7; --summer-bg: #e1f5fe;
+            --autumn-color: #ff8c00; --autumn-bg: #fffaf0;
+            --winter-color: #87ceeb; --winter-bg: #f0f8ff;
+        }
 
+        body {
+            font-family: var(--font-family);
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            margin: 0; padding: 0; line-height: 1.8;
+            background-image: linear-gradient(135deg, #fcefee 0%, #fcf4e0 100%);
+            overflow-x: hidden;
+        }
+
+        /* --- グローバルナビゲーション --- */
+        .gnav-header {
+            text-align: center; 
+			padding: 2rem 1rem;
+            background-color: rgba(255, 255, 255, 0.7);
+            backdrop-filter: blur(10px);
+            border-bottom: 3px dotted var(--gnav-hover);
+            position: sticky; top: 0; z-index: 1000;
+            font-family: var(--gnav-font);
+            color: var(--gnav-text);
+        }
+        .gnav-title { font-size: 2.5rem; font-weight: bold; margin: 0; color: var(--gnav-accent); text-shadow: 2px 2px 4px rgba(0,0,0,0.1); }
+        .gnav-nav { margin-top: 1.5rem; }
+        .gnav-nav a {
+            text-decoration: none; color: var(--gnav-text); font-weight: bold;
+            margin: 0 10px; padding: 8px 16px; border-radius: 20px;
+            background-color: #fff; box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+            transition: all 0.3s ease; display: inline-block;
+        }
+        .gnav-nav a:hover { background-color: var(--gnav-hover); color: white; transform: translateY(-2px); }
+        
+        /* ドロップダウン */
+        .gnav-dropdown { position: relative; display: inline-block; }
+        .gnav-dropdown-content {
+            visibility: hidden; opacity: 0; position: absolute;
+            background-color: rgba(255, 255, 255, 0.95); 
+            width: max-content; white-space: nowrap;
+            box-shadow: 0 8px 25px rgba(0,0,0,0.15); border-radius: 15px; padding: 10px;
+            z-index: 1100; top: 120%; left: 50%; transform: translateX(-50%) translateY(15px); 
+            transition: all 0.4s cubic-bezier(0.25, 1, 0.5, 1);
+            backdrop-filter: blur(5px); display: flex; flex-direction: column; gap: 5px;
+        }
+        .gnav-dropdown-content a {
+            margin: 0 !important; box-shadow: none !important; transform: none !important;
+            border-radius: 10px; padding: 10px 15px; font-size: 0.95rem; text-align: center; background-color: transparent;
+        }
+        .gnav-dropdown-content a:hover { background-color: var(--gnav-bg); color: var(--gnav-accent); }
+        .gnav-dropdown:hover .gnav-dropdown-content {
+            visibility: visible; opacity: 1; transform: translateX(-50%) translateY(0);
+        }
+
+        /* 言語切り替えボタン */
+        .lang-toggle {
+            font-family: var(--gnav-font); font-weight: bold; color: #fff;
+            background-color: var(--gnav-accent); border: none; border-radius: 20px;
+            padding: 8px 16px; margin-left: 15px; cursor: pointer;
+            box-shadow: 0 4px 10px rgba(211, 84, 0, 0.3); transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+        .lang-toggle:hover { transform: translateY(-3px) scale(1.05); box-shadow: 0 6px 15px rgba(211, 84, 0, 0.4); }
+        .lang-en { display: none; }
+        body.is-en .lang-ja { display: none; }
+        body.is-en .lang-en { display: inline; }
+
+        /* --- メインコンテンツ --- */
+        .container {
+            /* ▼ marginを「上 左右 下」に分けて指定し、上だけ小さくします */
+            max-width: 1000px; 
+			margin: -3rem auto 3rem; 
+			padding: 0 2rem; 
+            display: flex; flex-direction: column; 
+			gap: 2rem;
+            position: relative;
+        }
+
+        
+        /* ★重要：めくった後の回転（Z-indexはJavaScriptで自動制御します） */        
+        .page.flipped {
+            transform: rotateY(-180deg);
+        }
+
+        /* ヒーローセクション（写真とアイコンの遊び心） */
+		/* --- 1. 表示エリアを大幅に拡大 --- */
+        /* セクションの基本設定（#を.に変えて全セクション共通にする） */
+		.hero-section {
+			position: relative;
+			width: 100%;
+			min-height: 500px; /* 本(700px)＋上下余白 */
+			overflow: visible; /* 3Dアニメーションが切れないようにする */
+			display: flex;
+			justify-content: center;
+			align-items: center;
+			/* ★修正：スペルミスをなくし、親要素全体に強力な遠近感を直接かけます */
+            perspective: 3000px !important;
+		}
+			
+		/* ランダムに配置される写真の基本スタイル */
+		.random-photo {
+		    position: absolute;
+		    border-radius: 15px; /* 角を少し丸める（お好みで） */
+		    box-shadow: 0 8px 16px rgba(0,0,0,0.2); /* 		影をつけて浮いているように見せる */
+		    object-fit: cover; /* 画像の縦横比を綺麗に保つ */
+		}
+
+		/* --- 動く写真用のアニメーション（2パターン） --- */
+		.moving-photo-1 {
+		    animation: floatPattern1 10s ease-in-out infinite alternate;
+		}
+		.moving-photo-2 {
+		    animation: floatPattern2 12s ease-in-out infinite alternate;
+		}
+		
+		/* 上下左右にランダムに動いているように見せるキーフレーム */
+		@keyframes floatPattern1 {		
+		    0%   { transform: translate(0, 0); }
+		    25%  { transform: translate(20px, -25px); }
+		    50%  { transform: translate(-15px, 20px); }
+		    75%  { transform: translate(25px, 15px); }
+		    100% { transform: translate(-20px, -20px); }
+		}
+		
+		@keyframes floatPattern2 {
+		    0%   { transform: translate(0, 0); }
+		    25%  { transform: translate(-25px, 20px); }
+		    50%  { transform: translate(20px, -15px); }
+		    75%  { transform: translate(-20px, -25px); }
+		    100% { transform: translate(25px, 20px); }
+		}	
+			
+			
+			
+        /* 立体的な本全体のコンテナ */
+       .book {
+			width: 1050px;
+			height: 700px;
+			position: relative;
+			
+            transform-style: preserve-3d !important;
+            
+			/* ★純粋にど真ん中に固定します */
+			transform: translateX(0) !important;
+			margin: 0 auto;
+			
+		}
+
+/* ▼ 新規追加：ページ群を入れるコンテナ ▼ */
+        #pagesContainer {
+            width: 100%;
+            height: 100%;
+            position: relative;
+            /* ★親(.book)から受け継いだ3D効果を子要素(.page)に伝える */
+            transform-style: preserve-3d !important; 
+        }
+		
+
+/* 画面が狭い（スマホなど）場合に本を自動で縮小させる魔法のコード */
+@media (max-width: 1000px) {
+    .book {
+        transform: translateX(180px) scale(0.8);
+    }
+}
+@media (max-width: 768px) {
+    .book {
+        transform: translateX(140px) scale(0.6);
+    }
+}
+@media (max-width: 480px) {
+    .book {
+        transform: translateX(100px) scale(0.45);
+    }
+}
+
+        /* ▼ 新規追加：ページ群を入れるコンテナ ▼ */
+        #pagesContainer {
+            width: 100%;
+            height: 100%;
+            position: relative;
+            /* ★ここ重要：親(.book)から受け継いだ3D効果を子要素(.page)に伝えるために必要 */
+            transform-style: preserve-3d; 
+        }
+
+        /* ページの基本設定（中央軸回転） */
+        /* --- 2. 伸び縮みアニメーション --- */
+        @keyframes iconStretch {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.3) translateY(-10px); } /* 少し大きく、上に浮く */
+        }
+
+        .floating-icon {
+            width: 80px;
+            height: 80px;
+            object-fit: contain;
+            animation: iconStretch 2s infinite ease-in-out;
+            filter: drop-shadow(3px 3px 5px rgba(0,0,0,0.2));
+        }
+        
+        .icon-left { animation-delay: 0s; }
+        .icon-right { animation-delay: 0.5s; } /* タイミングをずらす */
+
+        /* ページの基本設定（中央軸回転） */
+        /* ページの基本設定（中央軸回転） */
+        .page {
+            width: 50%;
+            height: 100%;
+            position: absolute;
+            top: 0; right: 0;
+            transform-origin: left center;
+            transform-style: preserve-3d;
+            transition: transform 1.5s cubic-bezier(0.4, 0, 0.2, 1);
+            /* backface-visibility: hidden; を削除 */
+            z-index: 1;
+        }
+/* ページ内の画像がはみ出さないように固定 */
+.page img {
+    max-width: 100%;
+    height: auto;
+}
+
+        .page.flipped { transform: rotateY(-180deg); }
+
+        /* 左ページ（めくられた後の裏面）と右ページ（表面）の共通 */
+        .page-front, .page-back {
+            position: absolute;
+            width: 100%; height: 100%;
+            background: #fefcf5;
+            border: 1px solid #dcdcdc;
+            box-sizing: border-box;
+            backface-visibility: hidden;
+        }
+        
+        .page-back { transform: rotateY(180deg); } /* 裏返して左ページ用にする */
+
+/* 1. 裏面自体の基本設定（裏返っている間は見えないようにする） */
+.page-back {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    backface-visibility: hidden; /* 回転中、裏側から透けるのを防ぐ */
+    -webkit-backface-visibility: hidden;
+    transform: rotateY(-180deg); /* 常に裏を向いている状態 */
+}
+
+/* 2. 裏面の「中身」の初期状態（めくる前・戻る時） */
+.page-back > * {
+    opacity: 0;
+    transition: opacity 0.1s; /* 戻る時はチラつきを防ぐため一瞬で消す */
+}
+
+/* 3. ページがめくられた時（左ページに来た時） */
+.page.flipped .page-back > * {
+    opacity: 1;
+    /* ★修正：ページが垂直(90度)を超えて、裏面が見え始めるタイミング(0.5秒後)でパッと表示 */
+    transition: opacity 0.1s 0.5s; 
+}
+        /* 表紙の装飾 */
+        .front-cover {
+            background: #e74c3c !important;
+            color: white;
+        }
+
+        /* 本が開いた時の表紙の動き */
+        .book.open .front-cover {
+            transform: rotateY(-160deg); /* 左にパカッと開く */
+        }
+
+        /* 見開きページ（初期状態は右側に隠れている） */
+        .spread {
+            background: #fefcf5;
+            z-index: 1;
+            display: flex;
+            width: 100%; /* 見開きなので全幅 */
+            right: 0;
+            transform-origin: left center;
+        }
+
+        /* ぺらりとめくられる動作 */
+        .spread.turned {
+            transform: rotateY(-170deg); /* 左側にめくられる */
+            z-index: 0;
+        }
+
+        /* アクティブなページを前面に */
+        .spread.active {
+            z-index: 5;
+            opacity: 1 !important; /* 透明度による消去を無効化 */
+        }
+        .spread.active { opacity: 1; z-index: 5; }
+        .spread.turned { transform: rotateY(-175deg); }
+
+        .page-left, .page-right {
+            width: 50%;
+            height: 100%;
+            padding: 2rem;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            box-sizing: border-box;
+        }
+        .page-left { border-right: 1px dashed #ccc; }
+
+        .page-img {
+            width: 100%;
+            height: 200px;
+            object-fit: cover;
+            border: 2px solid #5a4a42;
+            margin-bottom: 1rem;
+        }
+
+        /* 右ページのビヨンビヨン動くアイコン */
+        .bouncing-icon {
+            font-size: 8rem;
+            animation: bounceIcon 1.5s infinite;
+        }
+
+        @keyframes bounceIcon {
+            0%, 100% { transform: scale(1) translateY(0); }
+            50% { transform: scale(0.9, 1.1) translateY(-30px); }
+        }
+
+        @media (max-width: 768px) {
+            .hero-section { height: 400px; }
+            .book { width: 95vw; height: 350px; }
+            .bouncing-icon { font-size: 5rem; }
+        }
+
+        /* 写真のスライドショー */
+        .photo-frame {
+            position: relative;
+            width: 300px; height: 300px;
+            border-radius: 30px 10px 30px 10px / 10px 30px 10px 30px; 
+            border: 4px solid var(--text-color);
+            background-color: #fff;
+            box-shadow: 10px 10px 20px rgba(0,0,0,0.15);
+            overflow: hidden;
+            transform: rotate(-2deg);
+            transition: transform 0.3s ease;
+            cursor: pointer;
+            z-index: 10;
+        }
+        .photo-frame:hover {
+            transform: rotate(1deg) scale(1.02);
+            box-shadow: 15px 15px 25px rgba(0,0,0,0.2);
+        }
+        /* 写真のスライドショー（修正版） */
+.photo-frame {
+    position: relative;
+    width: 300px; height: 300px;
+    border-radius: 30px 10px 30px 10px / 10px 30px 10px 30px; 
+    border: 4px solid var(--text-color);
+    background-color: #fff;
+    box-shadow: 10px 10px 20px rgba(0,0,0,0.15);
+    overflow: hidden;
+    transform: rotate(-2deg);
+    transition: transform 0.3s ease;
+    cursor: pointer;
+    z-index: 10;
+    margin: 10px auto; /* 中央寄せ用に追加 */
+}
+
+.photo-frame:hover {
+    transform: rotate(1deg) scale(1.02);
+    box-shadow: 15px 15px 25px rgba(0,0,0,0.2);
+}
+.photo-frame img {
+    position: absolute; 
+    top: 0; 
+    left: 0;
+    width: 100%; 
+    height: 100%; 
+    object-fit: cover;
+    opacity: 1;  /* ★ ここを 0 から 1 に変更（最初から見えるようにする） */
+    transition: opacity 0.5s ease-in-out; /* ★ JSの設定（0.5秒）に合わせると綺麗にフェードします */
+}
+
+/* activeクラスがついている画像だけを表示 */
+.photo-frame img.active { 
+    opacity: 1; 
+    z-index: 2; /* 前面に持ってくる */
+}
+
+/* 固定写真用：浮き上がりフレーム */
+.static-photo-frame {
+    width: 90%;          /* ページの横幅に合わせる */
+    max-width: 350px;    /* 大きくなりすぎないよう制限 */
+    margin: 20px auto;
+    padding: 10px;       /* 写真の周りの白い縁取り */
+    background-color: #fff;
+    border: 1px solid #ddd;
+    
+    /* 浮き上がって見える影の設定 */
+    box-shadow: 
+        0 10px 25px rgba(0,0,0,0.2), /* 深い影で高さを出す */
+        0 4px 10px rgba(0,0,0,0.1);  /* 手前の柔らかい影 */
+    
+    transform: translateY(-3px) rotate(1deg); /* 少し浮かせて傾ける */
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.static-photo-frame:hover {
+    transform: translateY(-8px) rotate(0deg) scale(1.03); /* ホバーでさらに浮き上がる */
+    box-shadow: 0 20px 40px rgba(0,0,0,0.25);
+}
+
+.static-photo-frame img {
+    width: 100%;
+    height: auto;
+    display: block;
+    object-fit: contain; /* 写真全体を表示 */
+}
+
+.photo-frame2 {
+    display: inline-block;
+    padding: 1px;
+    background: rgba(255, 255, 255, 0.8);
+    backdrop-filter: blur(4px); /* 背景が透けるとおしゃれ */
+    border-radius: 3px;
+    /* 重厚感のある二重の影 */
+    box-shadow: 
+        0 2px 4px rgba(0,0,0,0.05),
+        0 10px 20px rgba(0,0,0,0.05);
+    cursor: pointer;
+}
+
+.photo-frame2:hover {
+    filter: brightness(1.02);
+}
+
+.slide {
+    display: block;
+    border-radius: 8px;
+}
+
+
+
+
+
+        /* ふわふわ動くアイコン */
+        .floating-icon {
+            position: absolute;
+            width: 100px; height: 100px;
+            z-index: 5;
+            animation: float 6s ease-in-out infinite;
+            filter: drop-shadow(5px 5px 5px rgba(0,0,0,0.1));
+        }
+        .icon-left { top: 20%; left: 10%; animation-delay: 0s; transform: rotate(-10deg); }
+        .icon-right { bottom: 10%; right: 15%; animation-delay: 3s; width: 80px; height: 80px; transform: rotate(15deg); }
+
+        @keyframes float {
+            0% { transform: translateY(0px) rotate(0deg); }
+            50% { transform: translateY(-20px) rotate(5deg); }
+            100% { transform: translateY(0px) rotate(0deg); }
+        }
+
+        /* --- 各種メッセージボックス (カードスタイル流用) --- */
+        .message-card {
+            border-radius: 20px; padding: 2.5rem;
+            box-shadow: 0 8px 16px rgba(0,0,0,0.1); position: relative;
+            background-color: #fff;
+        }
+        .message-card h2 { font-size: 1.8rem; margin-top: 0; margin-bottom: 1.5rem; position: relative; z-index: 1; }
+        .card-content { 
+            background-color: rgba(255,255,255,0.8); border-radius: 15px; 
+            padding: 1.5rem; box-shadow: inset 0 2px 5px rgba(0,0,0,0.05); 
+            font-size: 1.05rem;
+        }
+        
+        /* 色のバリエーション */
+        .theme-intro { background-color: var(--autumn-bg); border: 3px solid var(--autumn-color); }
+        .theme-intro h2 { color: #d35400; }
+        .theme-intro::before { content: "🍂"; position: absolute; top: 15px; right: 20px; font-size: 3rem; opacity: 0.8; transform: rotate(15deg); }
+
+        .theme-grad { background-color: var(--winter-bg); border: 3px solid var(--winter-color); }
+        .theme-grad h2 { color: #2980b9; }
+        .theme-grad::before { content: "🎓"; position: absolute; top: 15px; right: 20px; font-size: 3rem; opacity: 0.8; transform: rotate(-10deg); }
+
+        .theme-undergrad { background-color: var(--spring-bg); border: 3px solid var(--spring-color); }
+        .theme-undergrad h2 { color: #e74c3c; }
+        .theme-undergrad::before { content: "🌸"; position: absolute; top: 15px; right: 20px; font-size: 3rem; opacity: 0.8; }
+
+        .two-columns {
+            display: grid; grid-template-columns: 1fr 1fr; gap: 2rem;
+        }
+
+        @media (max-width: 768px) {
+            .gnav-title { font-size: 1.8rem; }
+            .gnav-nav a { margin: 5px; }
+            .two-columns { grid-template-columns: 1fr; }
+            .photo-frame { width: 250px; height: 250px; }
+            .hero-section { height: 300px; }
+            .icon-left { left: 0; width: 70px; }
+            .icon-right { right: 0; width: 60px; }
+        }
+    /* --- 新機能：本棚・しおり・戻るボタン --- */
+        
+        /* 表示・非表示切り替え用 */
+        .hidden { display: none !important; }
+
+        /* 本棚セクション */
+        .bookshelf-section {
+            display: flex; justify-content: center; align-items: flex-end;
+            height: 350px; gap: 30px; border-bottom: 20px solid #8B5A2B; /* 木の棚板 */
+            padding-bottom: 5px; margin: 0 auto 3rem auto; width: 80%;
+            perspective: 1000px;
+        }
+
+        /* 背表紙のデザイン */
+        .book-spine {
+            width: 70px; height: 280px; border-radius: 5px 15px 15px 5px;
+            box-shadow: inset 5px 0 10px rgba(0,0,0,0.1), 8px 8px 15px rgba(0,0,0,0.3);
+            cursor: pointer; display: flex; align-items: center; justify-content: center;
+            writing-mode: vertical-rl; text-orientation: upright; letter-spacing: 2px;
+            font-weight: bold; color: white; font-size: 1.2rem; font-family: var(--font-family);
+            transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            position: relative;
+        }
+        
+        /* ホバーでふわっと浮き上がる */
+        .book-spine:hover { transform: translateY(-30px) scale(1.05); }
+
+        .spine-1 { background: linear-gradient(to right, #2c3e50, #34495e); }
+        .spine-2 { background: linear-gradient(to right, #c0392b, #e74c3c); }
+        .spine-3 { background: linear-gradient(to right, #f39c12, #f1c40f); color: #5a4a42; }
+
+/* Google Material Icons の位置を微調整する */
+.material-icons {
+    position: relative; /* 位置を動かせるようにする */
+    top: 2px; /* ★ここで下げる量を調整！ 浮いている分だけ下にズラす */
+    
+    /* ※もしこれで全体の行の高さが変わってしまう場合は、下の行も追加してください */
+    /* vertical-align: baseline; */
+}
+
+        /* しおり */
+        /* =========================================
+           和風のしおり（栞）スタイル
+           ========================================= */
+        .bookmark {
+            position: absolute;
+            top: -20px; /* 本の上部からはみ出させる */
+            right: 30px; /* 本の右側に配置 */
+            width: 36px;
+            height: 120px; /* 縦長の短冊状 */
+            
+            /* 1. 和紙の色と凸凹感の表現 */
+            background-color: #fdf5e6; /* やや薄黄色（OldLace） */
+            background-image: 
+                linear-gradient(45deg, rgba(0,0,0,0.015) 25%, transparent 25%, transparent 75%, rgba(0,0,0,0.015) 75%, rgba(0,0,0,0.015)), 
+                linear-gradient(45deg, rgba(0,0,0,0.015) 25%, transparent 25%, transparent 75%, rgba(0,0,0,0.015) 75%, rgba(0,0,0,0.015));
+            background-size: 4px 4px; /* 微細なノイズで繊維を表現 */
+            background-position: 0 0, 2px 2px;
+            box-shadow: 2px 3px 6px rgba(0,0,0,0.2), inset 0 0 15px rgba(0,0,0,0.04); /* 紙の厚みとムラ */
+            border-radius: 1px;
+            
+            /* 2. テキストを縦書きにする */
+            writing-mode: vertical-rl;
+            text-orientation: upright;
+            color: #5a4a42;
+            font-family: 'Zen Maru Gothic', serif;
+            font-size: 15px;
+            font-weight: bold;
+            letter-spacing: 5px; /* 文字の間隔を少し空ける */
+            
+            display: flex;
+            align-items: center;
+            justify-content: flex-start;
+            padding-top: 25px; /* こよりの結び目があるため、上部に余白を作る */
+
+            cursor: pointer;
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.3s ease;
+            z-index: 300;
+        }
+
+        /* 表示されるときのアニメーション（上からスッと降りてくる） */
+        .bookmark.visible {
+            opacity: 1;
+            visibility: visible;
+            top: -5px; 
+        }
+
+        /* ホバー時（少し上に引き抜くような動き） */
+        .bookmark:hover {
+            top: -15px; 
+            box-shadow: 3px 5px 10px rgba(0,0,0,0.25), inset 0 0 15px rgba(0,0,0,0.04);
+        }
+
+        /* 3. こより（上部の紐） */
+        .bookmark::before {
+            content: '';
+            position: absolute;
+            top: -30px; /* しおりの上にはみ出す */
+            left: 50%;
+            transform: translateX(-50%);
+            width: 2.5px;
+            height: 35px;
+            background-color: #d4b895; /* 和紙に馴染む紐の色 */
+            border-radius: 2px;
+            /* こより特有の「ねじれ感」をストライプで表現 */
+            background-image: repeating-linear-gradient(
+                -45deg,
+                transparent,
+                transparent 2px,
+                rgba(0,0,0,0.15) 2px,
+                rgba(0,0,0,0.15) 4px
+            );
+            z-index: -1;
+        }
+
+        /* こよりの結び目（しおりの穴を通っているように見せる） */
+        .bookmark::after {
+            content: '';
+            position: absolute;
+            top: 5px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 7px;
+            height: 7px;
+            background-color: #d4b895;
+            border-radius: 50%;
+            box-shadow: 1px 1px 2px rgba(0,0,0,0.3);
+        }
+
+        /* 本棚に戻すテキスト */
+        .return-btn {
+            position: absolute;
+            
+            bottom: 0px; 
+            right: -100px; 
+            
+            font-size: 1rem; color: var(--text-color);
+            font-weight: bold; cursor: pointer;
+            opacity: 0.4; transition: all 0.3s ease;
+            z-index: 100;
+        }
+        .return-btn:hover { opacity: 1; }
+		
+		/* --- 1. フェードイン・アウト用の設定 --- */
+        .fade-section {
+            transition: opacity 0.8s ease; /* 0.8秒かけてふわっと消える/現れる */
+            opacity: 1;
+        }
+        .fade-section.hidden {
+            display: none !important;
+            opacity: 0;
+        }
+
+        /* --- 2, 3, 4, 6. 本の質感・厚み・ハードカバー演出 --- */
+        :root {
+            --dynamic-book-color: #8B5A2B; /* JSで書き換わる変数の初期値 */
+            --book-thickness: 15px;        /* 本の厚み */
+        }
+
+        /* めくる軸を左端の中央に固定 */
+        .page {
+            left: 50%; right: auto; /* right:0から変更。左端が常に中央軸になります */
+        }
+
+        /* 3. 背表紙の3Dパーツ */
+        .book-spine-3d {
+            position: absolute;
+            left: 50%; top: 0;
+            width: var(--book-thickness); height: 100%;
+            background-color: var(--dynamic-book-color);
+            /* Z軸方向に押し出し、横向きに回転させて「厚み」を作る */
+            transform: translateX(-50%) translateZ(calc(var(--book-thickness) / -2)) rotateY(90deg);
+            box-shadow: inset 3px 0 8px rgba(0,0,0,0.3);
+            z-index: 0;
+        }
+
+        /* 4. 中身のページ（表紙よりひとまわり小さくする） */
+        .page.inner-page {
+            width: 48%;   /* 表紙(50%)より少し細く */
+            height: 96%;  /* 表紙(100%)より少し短く */
+            top: 2%;      /* 上下の中央に配置 */
+            background-color: #fdfbf7;
+            box-shadow: inset 0 0 10px rgba(0,0,0,0.05);
+        }
+
+        /* 6. 表紙・裏表紙の共通デザイン */
+        .cover-bg {
+            background-color: var(--dynamic-book-color) !important;
+            color: white;
+            /* ハードカバー特有の溝（ヒンジ）の影を表現 */
+            box-shadow: inset 10px 0 20px rgba(0,0,0,0.2), inset -2px -2px 5px rgba(0,0,0,0.3) !important;
+        }
+        
+        /* 表紙の裏側（少し折り返しが見える演出） */
+        .cover-inner {
+            background-color: #fdfbf7 !important;
+            border: 6px solid var(--dynamic-book-color); /* 表紙の巻き込み */
+        }
+
+       
+        /* 5. 右ページ（page-front）ノート風の罫線 */
+        .notebook-lines {
+            background-color: #fff;
+            
+            /* ① 罫線の間隔をピッタリ「2rem」のサイクルにする */
+            background-image: repeating-linear-gradient(
+                transparent,
+                transparent calc(2rem - 1px),
+                #e0e0e0 calc(2rem - 1px),
+                #e0e0e0 2rem
+            );
+            
+            /* ② 【重要】背景の線を引くスタート位置を、文字のスタート位置(paddingの内側)に合わせる */
+            background-origin: content-box;
+            background-position: top;
+            
+            /* ③ 文字の行間を、罫線の間隔（2rem）と完全に一致させる */
+            line-height: 2rem;
+        }
+
+        /* ④ 【重要】h3やpタグが持つ「勝手な余白」をリセットしてズレを防ぐ */
+        .notebook-lines > * {
+            margin-top: 0;
+            margin-bottom: 0;
+        }
+        
+        /* ⑤ 見出しの下に意図的に空きを作りたい場合は、必ず「罫線と同じ幅(2rem)」で指定する */
+        .notebook-lines h3 {
+            margin-bottom: 2rem; /* これでピッタリ1行分の空きができます */
+        }
+		
+		/* --- 矢印の基本設定（現在あるものはそのまま残します） --- */
+.nav-arrow {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    background: rgba(255, 255, 255, 0.8);
+    border: 2px solid var(--text-color);
+    color: var(--text-color);
+    font-size: 2rem;
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    cursor: pointer;
+    z-index: 100;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    transition: all 0.3s ease;
+    box-shadow: 2px 2px 10px rgba(0,0,0,0.2);
+}
+
+#book-prev-btn {
+    position: absolute !important;
+    top: 50% !important;
+    transform: translateY(-50%) !important;
+    
+    /* 画面中央から左へ 560px (525px + 35px) */
+    left: calc(50% - 560px) !important;
+    z-index: 1000 !important;
+}
+
+#book-next-btn {
+    position: absolute !important;
+    top: 50% !important;
+    transform: translateY(-50%) !important;
+    
+    /* 画面中央から右へ 560px (525px + 35px) */
+    right: calc(50% - 560px) !important;
+    z-index: 1000 !important;
+}
+
+/* 画面幅が1150px以下など、狭くなった時のための安全措置 */
+@media (max-width: 1200px) {
+    #book-prev-btn { left: 10px !important; }
+    #book-next-btn { right: 10px !important; }
+}
+		
+		/* =================================================== */
+        /* --- 英語モード時の本棚（横積みレイアウト） --- */
+        /* =================================================== */
+        
+        /* 本棚の並びを「縦方向（積み上げ）」に変更 */
+        body.is-en .bookshelf-section {
+            flex-direction: column;
+            justify-content: flex-end; /* 下（棚板）に向かって配置 */
+            align-items: center;
+            gap: 0; /* 本の間の隙間をなくして密着させる */
+            padding-bottom: 5px; /* 棚板との接地面の調整 */
+        }
+
+        /* 本の形状を「横置き」に変更 */
+        body.is-en .book-spine {
+            writing-mode: horizontal-tb; /* 横書きに戻す */
+            text-orientation: mixed;
+            width: 360px;  /* 本の高さ（横幅になります） */
+            height: 65px;  /* 本の厚み（高さになります） */
+            border-radius: 4px 8px 8px 4px; /* 横置き時の背表紙の丸みに調整 */
+            box-shadow: inset 0 -4px 8px rgba(0,0,0,0.2), 0 8px 15px rgba(0,0,0,0.4);
+            letter-spacing: 1px;
+            font-size: 1.2rem;
+            line-height: 1.3;
+            text-align: center;
+        }
+
+        /* ▼ ここから：無造作に積み上がっているジグザグ感の演出 ▼ */
+        body.is-en .spine-1 { 
+            margin-left: 30px; /* 少し右にズレる */
+            z-index: 3; 
+        }
+        body.is-en .spine-2 { 
+            margin-left: 70px; /* さらに右にズレる */
+            z-index: 2; 
+        }
+        body.is-en .spine-3 { 
+            margin-left: -20px; /* 少し左に出っ張る */
+            z-index: 1; 
+        }
+
+        /* ▼ 横積み時のホバー（マウスオーバー）アクション ▼ */
+        /* 上に浮くのではなく、本を「左に少し引き出す」ような動きに変更します */
+        body.is-en .book-spine:hover {
+            transform: translateX(-20px) scale(1.02) !important;
+        }
+		
+		
+		.random-photo {
+    /* JavaScriptで設定される absolute や width, height はそのまま活かされます */
+    
+    /* ★ 2. 余白を薄くする (8px → 3px などに減らす) */
+    padding: 3px;
+    background-color: #ffffff;
+    
+    /* ★ 2. 縁の線を細くする (3px → 1px に変更) */
+    border: 1px dotted #cccccc;
+    
+    /* 少し影をつけて立体感と写真っぽさを出す */
+    box-shadow: 2px 2px 8px rgba(0, 0, 0, 0.2);
+    
+    /* はみ出しを防止し、指定サイズ内に収める */
+    box-sizing: border-box; 
+    
+    /* 必要に応じて角をほんの少し丸める */
+    border-radius: 2px;
+}
+
+/* =========================================
+   左上のタイトル用三角形背景
+========================================= */
+.title-triangle {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 150px;  
+    height: 150px; 
+    background-color: var(--tri-color, #ffb7c5); 
+    clip-path: polygon(0 0, 100% 0, 0 100%);
+    
+    /* ★これを追加！下の罫線や紙の質感を透けさせる魔法（乗算） */
+    mix-blend-mode: multiply;
+	
+	/* ★ポイント①：三角形は「0」番目の層に置く */
+    z-index: 0; 
+    
+    transform-origin: top left;
+    animation: fillTriangle 0.6s ease-out forwards;
+}
+
+/* ★超重要：文字を三角形の手前に出す魔法 */
+.page-title {
+    /* ↓これがないと z-index の数字が無視されてしまいます！ */
+    position: relative; 
+    
+    /* ★ポイント②：文字は三角形(0)より大きい「1」番目の層に置く */
+    z-index: 1;         
+}
+
+
+/* itembox本体の枠 */
+.itembox {
+    position: relative;
+    margin: 20px 0 10px 0;
+    padding: 15px 10px 10px 10px;
+    border: 2px solid #5a4a42; /* 豆本の文字色に合わせた茶色 */
+    border-radius: 8px;       /* 少し角を丸くして柔らかい印象に */
+    background-color: rgba(255, 255, 255, 0.7); /* 下の罫線が少し透けるように半透明 */
+}
+
+/* 枠の上のタイトル部分 */
+.itembox-title {
+    position: absolute;
+    top: -12px;      /* 枠の真上に乗るように調整 */
+    left: 15px;      /* 左からの位置 */
+    padding: 0 10px;
+    background-color: #fcefee; /* ページの背景色と同じ色にして枠線を消す */
+    font-weight: bold;
+    color: #5a4a42;
+    font-size: 0.9em;
+}
+
+/* 中身のテキスト */
+.itembox-content {
+    margin: 0;
+    font-size: 0.85em;
+    line-height: 1.6;
+}
+
+/* 親要素：2カラムのグリッドを作る */
+.schedule-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr; /* 横に2等分 */
+    gap: 10px 8px; /* 縦・横の隙間 */
+    margin: 10px 0;
+}
+
+/* 各学期のボックス */
+.mini-section {
+    border-top: 2px solid var(--tri-color, #ccc); /* 上線だけで区切る */
+    padding-top: 5px;
+background-color: #ffffff; 
+
+}
+
+/* 見出し：さらに小さく */
+.mini-title {
+    display: block;
+    font-size: 0.75rem; /* かなり小さめ */
+    font-weight: bold;
+    line-height: 1.2;
+    margin-bottom: 3px;
+    color: #333;
+}
+
+/* 本文：極小サイズ */
+.mini-content {
+    display: block;
+    font-size: 0.7rem;
+    line-height: 1.3;
+    color: #5a4a42;
+    margin-bottom: 3px;
+}
+
+/* トピック：色を変えて一言で */
+.mini-topics {
+    display: block;
+    font-size: 0.65rem;
+    color: darkgreen;
+    background-color: rgba(0, 100, 0, 0.05); /* うっすら背景色 */
+    padding: 2px;
+    border-radius: 2px;
+}
+
+    </style>
+</head>
+<body>
+
+    <div class="gnav-header">
+        <span class="lang-en"><h1 class="gnav-title">Akitaka Yamada's Website</h1></span>
+        <span class="lang-ja"><p class="gnav-title">山田彬尭のウェブサイトへようこそ！</p></span>
+        <div class="gnav-nav">
+            <a href="https://keiosfc-aki2025.github.io/Seminar/SeminarProfile.html"><span class="lang-ja">ホーム</span><span class="lang-en">HOME</span></a>
+            <a href="https://ayamada.sfc.keio.ac.jp/publications"><span class="lang-ja">研究業績</span><span class="lang-en">PUBLICATIONS</span></a>
+            <a href="https://ayamada.sfc.keio.ac.jp/cv">CV</a>
+            <div class="gnav-dropdown">
+                <a href="https://ayamada.sfc.keio.ac.jp/%E8%A4%87%E8%A3%BD-issues-in-theoretical-linguistics-1"><span class="lang-ja">授業</span><span class="lang-en">TEACHING</span></a>
+                <div class="gnav-dropdown-content">
+                    <a href="#"><span class="lang-ja">音声学・音韻論・形態論<br>（Project Eng C）</span> <span class="lang-en">Phonetics, Phonology, and Morphology (GIGA)</span></a>
+                    <a href="https://keiosfc-aki2025.github.io/syntax/schedule.html"><span class="lang-ja">統語論</span><span class="lang-en">Syntax (GIGA)</span></a>
+                    <a href="https://keiosfc-aki2025.github.io/semantics-and-pragmatics/schedule.html"><span class="lang-ja">意味論・語用論<br>学部・大学院併設</span> <span class="lang-en">Semantics and Pragmatics</span></a>
+                </div>
+            </div>
+            <div class="gnav-dropdown">
+                <a href="https://keiosfc-aki2025.github.io/Seminar/SeminarProfile.html"><span class="lang-ja">研究会（ゼミ）</span><span class="lang-en">SEMINARS</span></a>
+                <div class="gnav-dropdown-content">
+                    <a href="https://keiosfc-aki2025.github.io/Seminar-B-Practice-in-Theoretical-Linguistics/TeamProfile.html"><span class="lang-ja">理論言語学実践</span><span class="lang-en">Practice in Theoretical Linguistics</span></a>
+                    <a href="https://ayamada.sfc.keio.ac.jp/ldf2025spring"><span class="lang-ja">言語×DH×FW</span><span class="lang-en">Language, DH, and FW</span></a>
+                </div>
+            </div>
+            <div class="gnav-dropdown">
+                <a><span class="lang-ja">コーパス分析</span><span class="lang-en">Corpus Tools</span></a>
+                <div class="gnav-dropdown-content">
+                    <a href="http://keiosfc-aki2025.github.io/KeioSFC/keioSFC.html">KeioSFC</a>
+                    <a href="https://keiosfc-aki2025.github.io/KeioSFC/xmleditor.html">Keio XMLeditor</a>
+                </div>
+            </div>
+            <a href="https://ayamada.sfc.keio.ac.jp/contact"><span class="lang-ja">コンタクト</span><span class="lang-en">CONTACT</span></a>
+            <button id="lang-btn" class="lang-toggle">English</button>
+        </div>
+    </div>
+
+    <main class="container">                
+        
+	　　 <section id="bookshelfSection" class="bookshelf-section fade-section">
+            <div class="book-spine spine-1" data-color="#2c3e50" data-book-id="book1">
+                <span class="lang-ja">研究者の方へ</span>
+                <span class="lang-en">For Researchers</span>
+            </div>
+            <div class="book-spine spine-2" data-color="#c0392b" data-book-id="book2">
+                <span class="lang-ja">学部生の方へ</span>
+                <span class="lang-en">For Undergraduates</span>
+            </div>
+            <div class="book-spine spine-3" data-color="#f39c12" data-book-id="book3">
+                <span class="lang-ja">大学院受験を<br>考えている方へ</span>
+                <span class="lang-en">For Prospective<br>Students</span>
+            </div>
+        </section>
+
+        <section id="bookSection" class="hero-section fade-section hidden">
+			<button id="book-prev-btn" class="nav-arrow left-arrow">⇐</button>
+			<button id="book-next-btn" class="nav-arrow right-arrow">⇒</button>
+		
+            <div id="heroBook" class="book">
+                <div id="bookmark" class="bookmark">▶ 再開</div>
+                <div id="returnBtn" class="return-btn">本棚に戻す</div>
+                <div class="book-spine-3d"></div>
+                
+                <div id="pagesContainer"></div>
+            </div>
+        </section>
+		<div id="bookDataStore" style="display: none;">
+
+
+
+
+
+            <!--- 一冊目：研究者むけ -------------------------------------> 
+            <div id="book1">
+　				<!--- 表紙 ---------------------------------> 
+                <div class="page" id="cover" style="z-index: 5;">
+                    <div class="page-front cover-bg" style="display:flex; flex-direction:column; align-items:center; justify-content:center; text-align:center;">
+                        <h2 style="padding: 20px; font-size: 2.2rem; margin:0; text-shadow: 2px 2px 4px rgba(0,0,0,0.2);">研究者の方へ</h2>
+                        <p style="font-weight: bold;">山田彬尭</p>
+                    </div>
+				<!--- 1ページ目（左） ---------------------------------> 
+                    <div class="page-back cover-inner" style="display:flex; align-items:center; justify-content:center;">
+                        <p style="font-size: 1.5rem; font-weight: bold; color: var(--text-color);">Welcome to my website!</p>
+                    </div>
+                </div>
+				<!--- １ページ目（右） ---------------------------------> 
+                <div class="page inner-page" id="p1" style="z-index: 4;">
+                    <div class="page-front notebook-lines" style="padding:20px; display:flex; flex-direction:column; align-items:center;">
+                        <h3>自己紹介</h3>
+                        <span class="lang-ja">
+                   
+                    <p>私は、慶應義塾大学環境情報学部／政策・メディア研究科で、理論言語学に、デジタルヒューマニティーズ的手法を応用させる文理融合研究を行っています。。</p>
+                    <p>理論言語学者としては、敬語を主要な研究対象にしつつ、形態統語論、意味論、語用論に渡り広範囲な言語現象を通言語的、および通時的視点を重視しながら研究してまいりました。</p>
+                    <p>デジタルヒューマニティーズの実践者として、従来の質的な研究手法では得にくかった新しい言語現象を分析することをこれまで数多く行ってきました。とりわけ、大規模オンライン実験やコーパスという形で蓄積された言語テキストデータを、ベイズ統計学・統計モデリングの視点から解析するというアプローチを得意にしてきました。研究の業績については、<a href="https://ayamada.sfc.keio.ac.jp/publications" style="color:#d35400; font-weight:bold;">こちら</a>をご覧ください。</p>
+                </span>
+                <span class="lang-en">
+                    
+                    <p>I am a researcher conducting interdisciplinary research that applies Digital Humanities methods to Theoretical Linguistics.</p>
+                    <p>Theoretical linguistics is a discipline that aims to hypothesize and theorize about grammar, the system of human language. Ultimately, to address the grand question of what cognitive abilities enable linguistic communication in humans as a species, I study the grammar of various languages, focusing primarily on Japanese and English.</p>
+                    <p>Digital Humanities refers to an interdisciplinary research approach that converts humanities research subjects—traditionally dominated by qualitative (and somewhat subjective) older research methods—into digital archives. By analyzing these using applied statistical methods and the like, we aim to uncover new aspects of subjects that were difficult to obtain through conventional wisdom. In my case, I specialize in an approach that analyzes linguistic text data accumulated in the form of large-scale online experiments and corpora from the perspective of Bayesian statistics and statistical modeling. For more information about my research achievements, please click <a href="https://ayamada.sfc.keio.ac.jp/publications" style="color:#d35400; font-weight:bold;">here</a>!</p>
+                </span>
+                    </div>
+                    <div class="page-back" style="padding:20px; display:flex; flex-direction:column; align-items:center;">
+                        <p>TBA</p>
+                    </div>
+                </div>
+				<!--- ２ページ目 ---------------------------------> 
+                <div class="page inner-page" id="p2" style="z-index: 3;">
+                    <div class="page-front notebook-lines" style="padding:20px;">
+                        <h3>これまでの業績</h3>
+                        <p><a href="https://ayamada.sfc.keio.ac.jp/publications" style="color:#d35400; font-weight:bold;">here</a></p>
+                    </div>
+                    <div class="page-back" style="padding:20px;">
+                        <p>TBA</p>
+                    </div>
+                </div>
+				<!--- ３ページ目 ---------------------------------> 
+                <div class="page inner-page" id="p3" style="z-index: 2;">
+                    <div class="page-front notebook-lines" style="padding:20px;">
+                        <h3>今後の展望</h3>
+                        <p>TBA</p>
+                    </div>
+                    <div class="page-back" style="padding:20px;">
+                        <p>TBA</p>
+                    </div>
+                </div>
+				<!--- 裏表紙 ---------------------------------> 				
+                <div class="page" id="p4" style="z-index: 1;">
+                    <div class="page-front cover-inner" style="display:flex; align-items:center; justify-content:center;">
+                        <p></p>
+                    </div>
+                    <div class="page-back cover-bg"></div>
+                </div>
+            </div>
+			
+			
+			
+			
+			
+			
+            <!--- 二冊目：現在の学生むけ -------------------------------------> 
+
+
+
+
+            <div id="book2">
+                <div class="page" id="cover" style="z-index: 10;">
+                    <div class="page-front cover-bg" style="display:flex; flex-direction:column; align-items:center; justify-content:center; text-align:center;">
+                        <h2 style="padding: 20px; font-size: 2.2rem; margin:0; text-shadow: 2px 2px 4px rgba(0,0,0,0.2);">学部生の方へ</h2>
+                        <p style="font-weight: bold;">履修案内・シラバス</p>
+                    </div>
+					
+					<!--- １ページ目（左） ---------------------------------> 
+                    <div class="page-back cover-inner" style="display:flex; align-items:center; justify-content:center;">
+                        <p style="font-size: 1.5rem; font-weight: bold; color: var(--text-color);">ようこそ！理論言語学の世界へ！</p>
+                    </div>
+                </div>
+
+                <div class="page inner-page" id="p1" style="z-index: 9;">
+					<!--- １ページ目（右） ---------------------------------> 
+                    <div class="page-front notebook-lines" style="padding:20px;">
+						
+                        <br><h3>理論言語学って何？</h3>
+                        <p>ことばを勉強しているとき「なぜこんな仕組みになっているんだろう」って思う理不尽なルールはありませんでしたか。</p><br>
+						
+						<p>語学の授業なら「そういうもんだから覚えて！」と蓋をしてしまう、そんな素朴な疑問に立ち止まって突き詰めるのが言語学です。
+						</p><br>
+						
+						<p>とりわけ、ことばの普遍性と多様性について、「理論」を立てながら立ち向かうのが理論言語学です。現象を捉えようと理論を重ねていく、偶然とは思えない発見の連続から、常識では捉えられていなかった、意外なことばの側面が見えてきます。語学の授業では見えなかった、ヒトという種に固有な言語のシステムに真正面から向き合ってみたい人<br>
+						<div style="text-align: right;">―――理論言語学へようこそ！</div></p>
+                    </div>
+
+
+
+
+					
+					<!--- ２ページ目（左） ---------------------------------> 
+                    <div class="page-back" style="padding:20px;">
+　	　				　　 <div class="title-triangle" style="--tri-color: #fff5f7;"></div>					　　
+                        <p><b>理論言語学の六分野①</b></p>
+						<div class="photo-frame" id="slideshow" title="Click to change photo!">
+							<img src="https://keiosfc-aki2025.github.io/Seminar/git_seminar_diagram1.png" class="slide active" >
+						</div><br>
+						🔍 理論言語学には「音声学」「音韻論」「形態論」「統語論」「意味論」「語用論」という六つの主要領域があります。<br><br>
+						🔍 音に関する分野が音声学と音韻論です。
+                    </div>
+                </div>
+				
+				<div class="page inner-page" id="p1" style="z-index: 8;">
+					<!--- ２ページ目（右） ---------------------------------> 
+                    <div class="page-front notebook-lines" style="padding:20px;">
+						<br><h3>分野の紹介：「音声学」と「音韻論」</h3>                        <p>「さ<u><font color = "red">ん</font></u>かい（三階）でさ<u><font color = "red">ん</font></u>ま（秋刀魚）をさ<u><font color = "red">ん</font></u>にん（三人）で食べた」の三つの「<font color = "red">ん</font>」、実は物理的には全部違う音なんです。でも母語話者は同じだと思ってます。</p><br><p>理不尽ですが、どうも成人のヒトの脳は別の音を同じだと認識することがあるらしいのです。平行な線を斜めに捉える錯視みたいに。まさに語学では習わない言語の不思議です。</p><br><p>「物理的」な音の正体を暴く音声学は、マイクやセンサーなどの測定器で捉えられるような、客観的な音の実態を研究します。						一方で、音韻論は、その言語の話し手が頭の中で音をどう整理し、分類しているかという、私たちが捉えた「心理的／主観的」側面を研究します。<br><div style="text-align: right;"><a href="#" style="color:#d35400; font-weight:bold;">▶ SFCにおける「音声学／音韻論」の授業</a></div></p>
+                    </div>
+					
+					
+					
+					
+					
+					<!--- ３ページ目（左） ---------------------------------> 
+					<div class="page-back" style="padding:20px; position: relative; overflow: hidden;">
+　	　				　　 <div class="title-triangle" style="--tri-color: #fff5f7;"></div>	
+						<div style="position: relative; z-index: 2;">
+							<p><b>理論言語学の六分野②</b></p>
+							<div class="photo-frame" id="slideshow" title="Click to change photo!">
+								<img src="https://keiosfc-aki2025.github.io/Seminar/git_seminar_diagram2.png" class="slide active" >
+								
+							</div><br>
+							🔍 理論言語学には「音声学」「音韻論」「形態論」「統語論」「意味論」「語用論」という六つの主要領域があります。<br><br>        🔍 ことばの構造を研究する分野が形態論と統語論です。
+						</div>
+					</div>
+				</div>
+
+				<div class="page inner-page" id="p1" style="z-index: 5;">
+					<!--- ３ページ目（右） ---------------------------------> 
+					<div class="page-front notebook-lines" style="padding:20px; position: relative; z-index: 10;">
+						<br><h3>分野の紹介：「形態論」と「統語論」</h3><p>英語の過去形<u><font color = "red">-ed</font></u>には<u><font color = "red">go+-ed = went</font></u>のように動詞と融合する不規則形があります。でも<u><font color = "red">-ing形</font></u>にはありません。なぜでしょうか。…実は、どうも単語の中に構造があり、不規則形を産むか否かは、この単語内の構造で決まるようなのです。<br><br>単語が集まってできる文も、構造を持っています。ここでも特定の構造的条件が揃うと「理不尽」な現象が生まれます。例えば<u><font color = "red">主語と述語の一致</font></u>などです。なくたってコミュニケーションは可能です。ということは、情報伝達のための規則ではないということです。そんなプログラミング言語や鳥の言語にはない変な性質、気になりますね。<br>
+						<br>ならば、言語の構造を調べることでヒトをよりよく理解できるかもしれません。こんな興味から単語の構造を研究する分野を形態論、文の構造を研究する分野を統語論と言います。<br><div style="text-align: right;">▶ SFCにおける<a href="#" style="color:#d35400; font-weight:bold;">「形態論」の授業</a>／<a href="https://keiosfc-aki2025.github.io/syntax/schedule.html" style="color:#d35400; font-weight:bold;">「統語論」の授業</a></div></p>								
+					</div>
+					
+					
+					
+					
+					<!--- ４ページ目（左） ---------------------------------> 
+                    <div class="page-back" style="padding:20px;">
+　	　				　　 <div class="title-triangle" style="--tri-color: #fff5f7;"></div>	
+                        <p><b>理論言語学の六分野③</b></p>
+						<div class="photo-frame" id="slideshow" title="Click to change photo!">
+							<img src="https://keiosfc-aki2025.github.io/Seminar/git_seminar_diagram3.png" class="slide active" alt="Slide 3">
+						</div><br>
+						🔍 理論言語学には「音声学」「音韻論」「形態論」「統語論」「意味論」「語用論」という六つの主要領域があります。<br><br>
+						🔍 ことばの意味を研究する分野が意味論と語用論です。
+                    </div>
+                </div>
+				
+				<div class="page inner-page" id="p1" style="z-index: 4;">
+					<!--- １ページ目（右） ---------------------------------> 
+                    <div class="page-front notebook-lines" style="padding:20px;">
+                        <br><h3>分野の紹介：「意味論」と「語用論」</h3>
+                        <p>「山脈」が無生物で足を持たないことは誰でも知っているのに、どうして「東北地方には奥羽山脈が<u><font color = "red">走っ</font></u>ている」なんて言うのでしょうか。非合理的です。この文の「走る」は「ジョンが<u><font color = "red">走る</font></u>」の「走る」と同じ意味なのでしょうか。<br><br>さらに、単語たちはつながることでより複雑な意味を作ります。「到着する」は「ている」とくっついて「到着している」になります。でも、英語でarriveとbe -ingをくっつけても「到着している」にはならず「到着しつつある」という意味になります。日本語と英語は何が違うのでしょうか。<br><br>このような単語や構文の意味を、人間の認知や論理学の視点を借りながら研究するのが意味論です。さらに、語用論では、文脈とのかかわりで生まれる意味を研究します。<br><br><div style="text-align: right;">▶ SFCにおける<a href="https://keiosfc-aki2025.github.io/semantics-and-pragmatics/schedule.html" style="color:#d35400; font-weight:bold;">「意味論/語用論」の授業</a></div></p>
+                    </div>
+					
+					
+					
+					
+					<!--- ２ページ目（左） ---------------------------------> 
+                    <div class="page-back" style="padding:20px;">
+					
+　	　				　　 <div class="title-triangle" style="--tri-color: #fff7eb;"></div>	
+                        <p><h3>「卒業プロジェクト」ってなに？​​</h3></p><br>
+						<p>SFCで理論言語学をはじめるかたへ</p>
+<p>SFCでは、「問題が与えられ、正解を教わる」のではなく「何が問題かを考え、解決方法を創出する」ことができる、「未来の先導者」を育成、輩出することをめざしています。この目標実現のプロセスとして、また、自らが未来へ前進するときの「自分自身のプロポーザル」として、卒業プロジェクト（卒業論文）の制作に取り組んでもらいます。<br><br>
+この研究会では、この未来志向型／「実学」重視のスタンスを<b>「既存の言語学の枠組みにとらわれず、分野横断的な融合を目指し、新しい視点を取り入れた研究を生み出す力」</b>のように考えて、将来に大きく羽ばたかんとする学生さんを強く応援します。
+<br><br>
+しかし、卒業プロジェクトにいきなり取り組めるものでもありません。<font color = "red">三段階</font>のプロセスを用意しています。
+
+</p>						
+                    </div>
+                </div>
+					
+				<div class="page inner-page" id="p1" style="z-index: 4;">
+					<!--- １ページ目（右） ---------------------------------> 
+                    <div class="page-front notebook-lines" style="padding:20px;">
+                        <br><b><span class="material-icons"><font color = "darkgreen"> grass</font></span>　ホップ：<font color = "#bc5148" style="font-size: 22px;">授業</font>を通じた基礎力の涵養</b>
+                        <p>理論言語学には、前頁までに見た6つの重要エリアがあります。私だけでなく、慶應では三田や日吉、矢上キャンパスなどでも様々な授業が開講されています。これらの授業に参加して、基礎力を蓄えてください。</p><div style="height: 26px;"></div>	
+						<b><span class="material-icons"><font color = "darkgreen">spa</font></span>　ステップ：<font color = "#bc5148" style="font-size: 22px;">研究会</font>を通じた応用力の育成</b>
+                        <p>理論言語学の先行研究を読みを「知識」と「議論」の力を伸ばす<b><font color = "brown"> 理論言語学実践</font></b>と、研究を遂行する上での「手段」と「技法」を育む<b><font color = "brown">言語×DH×FW</font></b>という二種類の研究会に参加し、研究遂行のための力を伸ばします。 </p>
+						<div style="height: 28px;"></div>						
+						<b><span class="material-icons"><font color = "darkgreen">forest</font></span>　ジャンプ：<font color = "#bc5148" style="font-size: 22px;">卒業プロジェクト</font>を通じた成果発表</b>
+                        <p>「研究とは何か」という大きな問いを、自らの興味のあるテーマに即し、考えます。<b>知の生産者</b>になることで	、言語学にとどまらない「専門知識」が私たちの社会をどう支えているのか自分なりに理解し、今後の人生を生きるためのヒントをつかみ取ってください。</p>
+						
+                    </div>
+					
+					
+					
+					
+					
+					
+					
+					<!--- ２ページ目（左） ---------------------------------> 
+                    <div class="page-back" style="padding:20px;">
+	　				　　 <div class="title-triangle" style="--tri-color: #F0E5D0;"></div>	
+                        <p><b>研究会１: 理論言語学実践</b></p>
+						<div class="photo-frame" id="slideshow" title="Click to change photo!">
+							<img src="https://keiosfc-aki2025.github.io/Seminar/git_seminar_diagram6.png" class="slide active">
+						</div><br>
+						この研究会（ゼミ）では、授業で習った知識・技術を前提に、毎学期テーマを決めて言語現象を深堀します。<br>
+						<div style="display: flex; justify-content: space-around; align-items: center; width: 100%; padding: 20px 0;">    
+							<div class="floating-icon" style="position: relative; animation-delay: 0s; animation-duration: 3.2s;">
+									<img src="https://keiosfc-aki2025.github.io/Seminar/git_seminar_diagram7.png" class="slide active" style="width: 100%; height: 										auto;">
+								</div>
+							<div class="floating-icon" style="position: relative; animation-delay: 0.8s; animation-duration: 2.7s;">
+									<img src="https://keiosfc-aki2025.github.io/Seminar/git_seminar_diagram5.png" class="slide active" style="width: 100%; height: auto;">
+							</div>
+								<div class="floating-icon" style="position: relative; animation-delay: 1.5s; animation-duration: 3.5s;">
+									<img src="https://keiosfc-aki2025.github.io/Seminar/git_seminar_diagram9.png" class="slide active" style="width: 100%; height: auto;">
+								</div>
+								<div class="floating-icon" style="position: relative; animation-delay: 0.4s; animation-duration: 2.9s;">
+									<img src="https://keiosfc-aki2025.github.io/Seminar/git_seminar_diagram8.png" class="slide active" style="width: 100%; height: auto;"> 
+								</div>
+							</div>
+                    </div>
+                </div>
+                <div class="page inner-page" id="p2" style="z-index: 3;">
+					<!--- ２ページ目（右） ---------------------------------> 
+                    <div class="page-front notebook-lines" style="padding:20px;">
+                        <br><h3>ことばの構造や意味の不思議を分析！</h3>
+						
+                        <p>授業で習った分析ツールを使いながら、より広範囲の言語データを分析します。毎学期テーマを変え、先行研究の批判的にかつ建設的に読み解くためにはどうすべきか、また、分析を発展させるにはどうすべきかを議論し、参加者が自分の興味を持った言語現象を自らの力で分析できるようになるための力を伸ばす機会を提供します（詳しくは<a href="https://keiosfc-aki2025.github.io/Seminar-B-Practice-in-Theoretical-Linguistics/TeamProfile.html">こちら</a>）。</p>
+						
+						
+                        <div class="itembox" style="margin-top: 30px;">
+                            <span class="itembox-title">応募条件</span>
+                            <div class="itembox-content">
+                                
+                                <p style="margin-bottom: 8px;">
+                                    <span class="material-icons" style="color: darkgreen; font-size: 18px; vertical-align: middle;">check_circle</span>
+                                    <strong>① 動画の視聴とマッチング</strong><br>
+                                    <span style="font-size: 0.9em; padding-left: 1.2em; display: block;">
+                                        次の動画をすべて視聴して、自分とマッチしていると感じていること。
+                                    </span>
+									<div style="display: flex; justify-content: center; gap: 8px; margin: 15px 0; flex-wrap: wrap;">
+    <a href="https://www.youtube.com/watch?v=k0VDIKlmdHU&feature=youtu.be" target="_blank" style="
+        display: inline-flex;
+        align-items: center;
+        text-decoration: none;
+        background-color: #a66d5d;
+        color: white;
+        padding: 5px 10px;
+        border-radius: 15px;
+        font-size: 0.75em;
+        font-weight: bold;
+        box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+    ">
+        <span class="material-icons" style="font-size: 16px; margin-right: 3px;">play_circle</span>動画1
+    </a>
+
+    <a href="https://www.youtube.com/watch?v=W2dGr0DNlRU" target="_blank" style="
+        display: inline-flex;
+        align-items: center;
+        text-decoration: none;
+        background-color: #a66d5d;
+        color: white;
+        padding: 5px 10px;
+        border-radius: 15px;
+        font-size: 0.75em;
+        font-weight: bold;
+        box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+    ">
+        <span class="material-icons" style="font-size: 16px; margin-right: 3px;">play_circle</span>動画2
+    </a>
+
+    <a href="https://www.youtube.com/watch?v=bOoWnDv5gFs" target="_blank" style="
+        display: inline-flex;
+        align-items: center;
+        text-decoration: none;
+        background-color: #a66d5d;
+        color: white;
+        padding: 5px 10px;
+        border-radius: 15px;
+        font-size: 0.75em;
+        font-weight: bold;
+        box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+    ">
+        <span class="material-icons" style="font-size: 16px; margin-right: 3px;">play_circle</span>動画3
+    </a>
+</div>
+
+
+                                </p>
+
+                                <p>
+                                    <span class="material-icons" style="color: darkgreen; font-size: 18px; vertical-align: middle;">check_circle</span>
+                                    <strong>② 指定科目の履修と成績</strong><br>
+                                    <span style="font-size: 0.9em; padding-left: 1.2em; display: block;">
+                                        下記授業（またはそれに対応する授業）を<font color ="red"> 2科目以上</font>履修し、B以上の成績を修めていること
+                                    </span>
+                                </p>
+                        
+                                <ul style="font-size: 0.85em; margin: 5px 0 5px 1.5em; padding: 0; list-style-type: '・';">
+                                    <li>理論言語学入門（統語論）</li>
+                                    <li>理論言語学入門（意味論／語用論）、または、語彙意味論</li>
+                                    <li>プロジェクト英語C（文法）</li>
+                                </ul>
+
+                                <p style="font-size: 0.8em; color: #888; margin-top: 8px; border-top: 1px dashed #ccc; padding-top: 5px;">
+                                    ※1年生などの方でも過去に相応の訓練を積んでいる人は受け入れることもある。
+                                </p>
+
+    </div>
+</div>
+						
+
+                    </div>
+					
+					
+					
+					<!--- 2ページ目 ---------------------------------> 
+                    <div class="page-back" style="padding:20px;">
+　	　				　　 <div class="title-triangle" style="--tri-color: #F0E5D0;"></div>	
+                        <p><b>研究会２：言語×DH×FW</b></p>
+						
+						
+						<div class="photo-frame"><img src="https://keiosfc-aki2025.github.io/Seminar/git_seminar_diagram10.png" 
+							class="auto-slideshow" 
+							data-interval="4000" 
+							alt="スライド"></div>
+				
+						
+						この研究会（ゼミ）では、授業で習った知識・技術を前提に、毎学期テーマを決めて言語現象を深堀します。<br>
+						<div style="display: flex; justify-content: space-around; align-items: center; width: 100%; padding: 20px 0;">    
+							<div class="floating-icon" style="position: relative; animation-delay: 0s; animation-duration: 3.2s;">
+									<img src="https://keiosfc-aki2025.github.io/Seminar/git_seminar_diagram4.png" class="slide active" style="width: 100%; height: 										auto;">
+								</div>
+							<div class="floating-icon" style="position: relative; animation-delay: 0.8s; animation-duration: 2.7s;">
+									<img src="https://keiosfc-aki2025.github.io/Seminar/git_seminar_diagram14.png" class="slide active" style="width: 100%; height: auto;">
+							</div>
+								<div class="floating-icon" style="position: relative; animation-delay: 1.5s; animation-duration: 3.5s;">
+									<img src="https://keiosfc-aki2025.github.io/Seminar/git_seminar_diagram11.png" class="slide active" style="width: 100%; height: auto;">
+								</div>
+								<div class="floating-icon" style="position: relative; animation-delay: 0.4s; animation-duration: 2.9s;">
+									<img src="https://keiosfc-aki2025.github.io/Seminar/git_seminar_diagram12.png" class="slide active" style="width: 100%; height: auto;"> 
+								</div>
+							</div>
+
+
+
+                    </div>
+                </div>		
+				<div class="page inner-page" id="p2" style="z-index: 3;">
+					<!--- ２ページ目（右） ---------------------------------> 
+                    <div class="page-front notebook-lines" style="padding:20px;">
+                        <br><h3>パソコンを使って言語データ分析！</h3>
+						
+                        <p>DS1やDS2で学んだ統計学／データ分析技術を、言語研究に応用するという視点から復習しつつ、言語実験やコーパス作成／分析という視点から掘り下げ、定量的な言語データ分析力を育成する（第1回の内容は下記に公開中）。</p>
+		
+						
+						
+									<div style="display: flex; justify-content: center; gap: 8px; margin: 15px 0; flex-wrap: wrap;">
+    <a href="https://www.youtube.com/watch?v=k0VDIKlmdHU&feature=youtu.be" target="_blank" style="
+        display: inline-flex;
+        align-items: center;
+        text-decoration: none;
+        background-color: #a66d5d;
+        color: white;
+        padding: 5px 10px;
+        border-radius: 15px;
+        font-size: 0.75em;
+        font-weight: bold;
+        box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+    ">
+        <span class="material-icons" style="font-size: 16px; margin-right: 3px;">play_circle</span>動画1
+    </a>
+
+    <a href="https://www.youtube.com/watch?v=W2dGr0DNlRU" target="_blank" style="
+        display: inline-flex;
+        align-items: center;
+        text-decoration: none;
+        background-color: #a66d5d;
+        color: white;
+        padding: 5px 10px;
+        border-radius: 15px;
+        font-size: 0.75em;
+        font-weight: bold;
+        box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+    ">
+        <span class="material-icons" style="font-size: 16px; margin-right: 3px;">play_circle</span>動画2
+    </a>
+
+    <a href="https://www.youtube.com/watch?v=bOoWnDv5gFs" target="_blank" style="
+        display: inline-flex;
+        align-items: center;
+        text-decoration: none;
+        background-color: #a66d5d;
+        color: white;
+        padding: 5px 10px;
+        border-radius: 15px;
+        font-size: 0.75em;
+        font-weight: bold;
+        box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+    ">
+        <span class="material-icons" style="font-size: 16px; margin-right: 3px;">play_circle</span>動画3
+    </a>
+</div>
+
+<div class="schedule-grid">
+
+    <div class="mini-section" style="--tri-color: #a3cfbb;">
+        <span class="mini-title">🌸 春：実験言語学と初歩的な統計分析</span>
+        <span class="mini-content">DSのおさらいと、言語実験データの基礎</span>
+        <span class="mini-topics">記述統計、t検定、単回帰</span>
+    </div>
+
+    <div class="mini-section" style="--tri-color: #81c784;">
+        <span class="mini-title">☀️ 夏特：実験言語学と統計分析</span>
+        <span class="mini-content">高度な実験立案と、その分析</span>
+        <span class="mini-topics">重回帰分析、分散分析、LMM</span>
+    </div>
+
+    <div class="mini-section" style="--tri-color: #4caf50;">
+        <span class="mini-title">🍁 秋：コーパスとその分析</span>
+        <span class="mini-content">テキスト解析手法と、独自コーパス作成</span>
+        <span class="mini-topics">一般化線形モデル</span>
+    </div>
+
+    <div class="mini-section" style="--tri-color: #1b5e20;">
+        <span class="mini-title">❄️ 冬特：より柔軟なモデルへ</span>
+        <span class="mini-content">応用解析手法の取得</span>
+        <span class="mini-topics">ベイズ、Stan演習</span>
+    </div>
+
+</div>
+
+                        <div class="itembox" style="margin-top: 30px;">
+                            <span class="itembox-title">応募条件</span>
+                            <div class="itembox-content">
+                                
+                                <p style="margin-bottom: 8px;">
+                                    <span class="material-icons" style="color: darkgreen; font-size: 18px; vertical-align: middle;">check_circle</span>
+                                    <strong>DS1およびDS2を履修済み（または履修中）</strong><br>
+                                </p>
+
+                                <p style="font-size: 0.8em; color: #888; margin-top: 8px; border-top: 1px dashed #ccc; padding-top: 5px;">
+                                    ※1年生などの方でも過去に相応の訓練を積んでいる人は受け入れることもある。
+                                </p>
+
+						</div>
+					</div>
+					<!--- 2ページ目 ---------------------------------> 
+					</div>
+
+                    <div class="page-back" style="padding:20px;">
+　	　				　　 <div class="title-triangle" style="--tri-color: #FFDAB9;"></div>	
+                        <div id="exclude-area"><p><h3>研究会の様子</h3></p>
+							<p>唯一無二の大学生活を知的に、真摯に、鮮やかに。</p>
+						</div>
+						
+						
+						<div class="photo-container" style="position: absolute; top:0; left:0; width:100%; height:100%; z-index: 1; pointer-events: none;" 
+								data-seed="13"
+								data-photos = '[
+									"https://keiosfc-aki2025.github.io/Seminar/git_seminar_activity17.jpg",
+									"https://keiosfc-aki2025.github.io/Seminar/git_seminar_activity1.jpg",
+									"https://keiosfc-aki2025.github.io/Seminar/git_seminar_activity3.jpg",
+									"https://keiosfc-aki2025.github.io/Seminar/git_seminar_activity4.jpg",
+									"https://keiosfc-aki2025.github.io/Seminar/git_seminar_activity5.jpg",
+									"https://keiosfc-aki2025.github.io/Seminar/git_seminar_activity6.jpg",
+									"https://keiosfc-aki2025.github.io/Seminar/git_seminar_activity7.jpg",
+									
+									"https://keiosfc-aki2025.github.io/Seminar/git_seminar_activity2.jpg",
+									
+									"https://keiosfc-aki2025.github.io/Seminar/git_seminar_activity8.jpg"
+									]'
+						>
+						</div>
+						
+						
+                    </div>
+                </div>
+                <div class="page" id="p3" style="z-index: 1;">
+                    <div class="page-front cover-inner" style="display:flex; align-items:center; justify-content:center;">
+                        <div class="photo-container" style="position: absolute; top:0; left:0; width:100%; height:100%; z-index: 1; pointer-events: none;" 
+						        data-seed="11"
+								data-photos = '[
+									"https://keiosfc-aki2025.github.io/Seminar/git_seminar_activity14.jpg",
+									"https://keiosfc-aki2025.github.io/Seminar/git_seminar_activity10.jpg",
+									"https://keiosfc-aki2025.github.io/Seminar/git_seminar_activity11.jpg",
+									"https://keiosfc-aki2025.github.io/Seminar/git_seminar_activity12.jpg",
+									"https://keiosfc-aki2025.github.io/Seminar/git_seminar_activity9.jpg",
+									"https://keiosfc-aki2025.github.io/Seminar/git_seminar_activity8.jpg",
+									"https://keiosfc-aki2025.github.io/Seminar/git_seminar_activity15.jpg",
+									"https://keiosfc-aki2025.github.io/Seminar/git_seminar_activity16.jpg",
+									"https://keiosfc-aki2025.github.io/Seminar/git_seminar_activity13.jpg"
+									]'
+						>
+						</div>
+                    </div>
+                    <div class="page-back cover-bg"></div>
+                </div>
+            </div>
+
+
+
+
+
+
+            <!--- 三冊目：受験者むけ -------------------------------------> 
+
+
+
+
+            <div id="book3">
+                <div class="page" id="cover" style="z-index: 4;">
+                    <div class="page-front cover-bg" style="display:flex; flex-direction:column; align-items:center; justify-content:center; text-align:center;">
+                        <h2 style="padding: 20px; font-size: 1.8rem; margin:0; text-shadow: 2px 2px 4px rgba(0,0,0,0.2);">大学院受験を<br>考えている方へ</h2>
+                    </div>
+                    <div class="page-back cover-inner" style="display:flex; align-items:center; justify-content:center;">
+                        <p style="font-size: 1.5rem; font-weight: bold; color: var(--text-color);">Welcome!</p>
+                    </div>
+                </div>
+                <div class="page inner-page" id="p1" style="z-index: 3;">
+                    <div class="page-front notebook-lines" style="padding:20px;">
+                        <h3>入試情報</h3>
+                        <p>慶應のHPをご覧ください。</p>
+                    </div>
+                    <div class="page-back" style="padding:20px;">
+                        <p>TBA</p>
+                    </div>
+                </div>
+                <div class="page inner-page" id="p2" style="z-index: 2;">
+                    <div class="page-front notebook-lines" style="padding:20px;">
+                        <h3>研究計画書について</h3>
+                        <p>TBA</p>
+                    </div>
+                    <div class="page-back" style="padding:20px;">
+                        <p></p>
+                    </div>
+                </div>
+                <div class="page" id="p3" style="z-index: 1;">
+                    <div class="page-front cover-inner" style="display:flex; align-items:center; justify-content:center;">
+                        
+                    </div>
+                    <div class="page-back cover-bg"></div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <script>
+        // --- 言語切り替えスクリプト ---
+        document.addEventListener('DOMContentLoaded', function() {
+            const langBtn = document.getElementById('lang-btn');
+            if (!langBtn) return; 
+
+            langBtn.addEventListener('click', function(e) {
+                e.preventDefault(); 
+                document.body.classList.toggle('is-en');
+                
+                if (document.body.classList.contains('is-en')) {
+                    langBtn.textContent = '日本語';
+                } else {
+                    langBtn.textContent = 'English';
+                }
+            });
+        });
+
+// --- 立体絵本アニメーション制御＆本棚機能（修正版） ---
+document.addEventListener('DOMContentLoaded', function() {
+    const bookshelfSection = document.getElementById('bookshelfSection');
+    const bookSection = document.getElementById('bookSection');
+    const spines = document.querySelectorAll('.book-spine');
+    const heroBook = document.getElementById('heroBook');
+    const bookmark = document.getElementById('bookmark');
+    const returnBtn = document.getElementById('returnBtn');
+    const pagesContainer = document.getElementById('pagesContainer');
+    
+    // 手動めくり用の矢印ボタン
+    const prevBtn = document.getElementById('book-prev-btn');
+    const nextBtn = document.getElementById('book-next-btn');
+
+    
+    
+
+    // 次のページをめくる関数
+    let pages = []; 
+    let currentIndex = 0;
+    let flipInterval = null;
+    let initialTimeout = null;
+    let isPaused = false;
+
+    // ▼ 新規追加：ページの状態に合わせて重なり順(Z-index)を自動調整する関数
+    function updateZIndex() {
+        pages.forEach((page, index) => {
+            if (page.classList.contains('flipped')) {
+                // 左側にめくられたページは、後からめくったものほど上（手前）にする
+                page.style.zIndex = 100 + index;
+            } else {
+                // 右側にあるページは、先頭（表紙）に近いものほど上（手前）にする
+                page.style.zIndex = pages.length - index;
+            }
+        });
+    }
+
+	// =========================================================
+    // ▼ 修正版：キーボードの矢印キー（← →）とスペースキーの機能
+    // =========================================================
+    window.addEventListener('keydown', function(event) {
+        
+        // 1. 右矢印キー（→）
+        if (event.keyCode === 39 || event.key === 'ArrowRight') {
+            if (nextBtn) nextBtn.click(); 
+        }
+        
+        // 2. 左矢印キー（←）
+        else if (event.keyCode === 37 || event.key === 'ArrowLeft') {
+            if (prevBtn) prevBtn.click(); 
+        }
+        
+        // 3. スペースキー（一時停止/再開）※keyCode === 32で確実に判定！
+        else if (event.keyCode === 32 || event.key === ' ' || event.code === 'Space') {
+            
+            // ★最優先でスペースキーの「画面スクロール」を強制ストップする
+            event.preventDefault(); 
+
+            // 本が開かれている（pages配列に中身がある）場合のみ、しおりを処理
+            if (pages && pages.length > 0) {
+                if (!isPaused) {
+                    // 一時停止＆しおり登場
+                    stopAutoFlip();
+                    if (bookmark) bookmark.classList.add('visible');
+                    isPaused = true;
+                } else {
+                    // 再開＆しおりを隠す
+                    if (bookmark) bookmark.classList.remove('visible');
+                    isPaused = false;
+                    startAutoFlip();
+                }
+            }
+        }
+    });	
+	
+    // 次のページをめくる関数
+    function flipNextPage() {
+        if (currentIndex < pages.length) {
+            pages[currentIndex].classList.add('flipped');
+            updateZIndex(); // ★めくった後に重なり順を更新
+            currentIndex++;
+        } else {
+            // --- 全ページめくり終わった後のループ処理 ---
+            stopAutoFlip(); // 一旦停止
+            
+            // ① そこで数秒待つ（ここでは2秒）
+            setTimeout(() => {
+            // ② ページがめくれ（全て一斉に右に戻る）
+            pages.forEach(p => p.classList.remove('flipped'));
+                
+            setTimeout(() => {
+                    updateZIndex();
+            }, 600);
+                
+            currentIndex = 0;
+
+            // ③ 初期状態に戻った後、少し待ってから自動めくりを最初から再開
+            setTimeout(() => {
+                    if (pages.length > 0 && !isPaused) {
+                        pages[0].classList.add('flipped');
+                        updateZIndex(); // ★めくった後に重なり順を更新
+                        currentIndex = 1;
+                        startAutoFlip(); // 自動めくり再開
+                    }
+                }, 3000); // 3000ms = パタンと本が閉じてから再度開くまでの待ち時間
+            }, 2000); 
+        }
+    }
+
+    function startAutoFlip() {
+        if (flipInterval) clearInterval(flipInterval);
+        flipInterval = setInterval(flipNextPage, 4000);
+    }
+
+    function stopAutoFlip() {
+        if (flipInterval) clearInterval(flipInterval);
+        if (initialTimeout) clearTimeout(initialTimeout);
+    }
+
+    // 1. 本棚の本をクリックしたとき
+    spines.forEach(spine => {
+        spine.addEventListener('click', (e) => {
+            const selectedColor = e.currentTarget.getAttribute('data-color');
+            const bookId = e.currentTarget.getAttribute('data-book-id'); 
+
+            document.documentElement.style.setProperty('--dynamic-book-color', selectedColor);
+            const bookDataHTML = document.getElementById(bookId).innerHTML;
+            pagesContainer.innerHTML = bookDataHTML;
+
+            pages = Array.from(pagesContainer.querySelectorAll('.page'));
+            updateZIndex(); // ★本を開く前に初期の重なり順をセット
+
+            bookshelfSection.style.opacity = '0';
+            setTimeout(() => {
+                // ここで本が画面に表示される（display:noneが解除される）
+                bookshelfSection.classList.add('hidden');
+                bookSection.classList.remove('hidden');
+                bookSection.style.opacity = '1';
+                
+                // =========================================================
+                // ★修正：非表示が解除され、幅や高さが「0」ではなくなってから写真を配置する
+                // =========================================================
+                pagesContainer.querySelectorAll('.photo-container').forEach((container, index) => {
+                    const urlsRaw = container.getAttribute('data-photos');
+                    if (urlsRaw) {
+                        try {
+                            const urls = JSON.parse(urlsRaw); 
+                            
+                            // ★ HTMLから自分で設定した data-seed の値を読み取る
+                            const customSeedAttr = container.getAttribute('data-seed');
+                            
+                            // もしHTMLに data-seed="〇〇" が書いてあればその数字を使い、
+                            // 書き忘れていた場合はとりあえず 1 を使うようにする
+                            const pageSeed = customSeedAttr ? parseInt(customSeedAttr, 10) : 1;
+                            
+                            setupFloatingPhotos(container, urls, pageSeed); 
+                        } catch (e) {
+                            console.error("写真リストの形式に誤りがあります:", urlsRaw);
+                        }
+                    }
+                });
+                // =========================================================
+				
+				
+
+                initialTimeout = setTimeout(() => {
+                    if (pages.length > 0) {
+                        pages[0].classList.add('flipped');
+                        updateZIndex(); // ★めくった後に重なり順を更新
+                        currentIndex = 1;
+                        startAutoFlip();
+                    }
+                }, 1000);
+            }, 800);
+        });
+    });
+
+    // 2. 「⇒」矢印：次のページへ
+    if (nextBtn) {
+        nextBtn.addEventListener('click', (e) => {
+            e.stopPropagation(); 
+            if (currentIndex < pages.length) {
+                if (!isPaused) { stopAutoFlip(); startAutoFlip(); }
+                pages[currentIndex].classList.add('flipped');
+                updateZIndex(); // ★めくった後に重なり順を更新
+                currentIndex++;
+            }
+        });
+    }
+
+    // 3. 「⇐」矢印：前のページへ
+    if (prevBtn) {
+        prevBtn.addEventListener('click', (e) => {
+            e.stopPropagation(); 
+            if (currentIndex > 0) {
+                if (!isPaused) { stopAutoFlip(); startAutoFlip(); }
+                currentIndex--; 
+                pages[currentIndex].classList.remove('flipped'); 
+                updateZIndex(); // ★戻した後に重なり順を更新
+            }
+        });
+    }
+
+    // 4. 絵本の中をクリック：一時停止＆しおり登場
+    heroBook.addEventListener('click', (e) => {
+        if (e.target.closest('#bookmark') || e.target.closest('#returnBtn') || e.target.closest('.nav-arrow')) return;
+        
+        if (!isPaused) {
+            stopAutoFlip();
+            bookmark.classList.add('visible');
+            isPaused = true;
+        }
+    });
+
+    // 5. しおりをクリック：再開
+    bookmark.addEventListener('click', (e) => {
+        e.stopPropagation();
+        bookmark.classList.remove('visible');
+        isPaused = false;
+        startAutoFlip();
+    });
+
+    // 6. 戻るボタン
+    returnBtn.addEventListener('click', (e) => {
+        e.stopPropagation();
+        stopAutoFlip();
+        bookmark.classList.remove('visible');
+        isPaused = false;
+        pages.forEach(p => p.classList.remove('flipped'));
+        updateZIndex(); // ★戻る時に重なり順をリセット
+        currentIndex = 0;
+
+        setTimeout(() => {
+            bookSection.style.opacity = '0';
+            setTimeout(() => {
+                bookSection.classList.add('hidden');
+                bookshelfSection.classList.remove('hidden');
+                pagesContainer.innerHTML = '';
+                pages = [];
+                bookshelfSection.style.opacity = '1';
+            }, 800);
+        }, 800); 
+    });
+});
+
+
+// ★ 1. 乱数のシードと疑似乱数生成関数を関数の外
+
+let currentSeed = 2;
+
+// シード値に基づく疑似乱数生成（0以上1未満を返す関数）
+function seededRandom() {
+    let x = Math.sin(currentSeed++) * 10000;
+    return x - Math.floor(x);
+}
+
+// 何度でも使い回せる「写真ばらまき機能関数」
+function setupFloatingPhotos(container, photoUrls, customSeed) {
+	// ※もし本を開くたびに毎回全く同じ配置に固定したい場合は、
+    // ここで `currentSeed = seed;` を実行してシードを初期化してください。
+	currentSeed = customSeed;
+	
+    if (!container || !photoUrls || photoUrls.length === 0) return;
+
+    // ▼▼ ここから追加：同じページにある「文字や他の要素」を絶対に手前に出す（保護する）魔法 ▼▼
+    container.style.zIndex = "1";
+    Array.from(container.parentNode.children).forEach(child => {
+        // 写真の箱（コンテナ）以外のすべての要素に対して
+        if (child !== container) {
+            // 普通の文字だった場合は、手前に出せるように一時的に設定を変更
+            if (window.getComputedStyle(child).position === 'static') {
+                child.style.position = 'relative';
+            }
+            // 絶対に写真(z-index: 1)よりも手前(z-index: 2)に出す
+            child.style.zIndex = '2';
+        }
+    });
+
+	const excludeElem = document.getElementById("exclude-area");
+    let excludeBox = null;
+    if (excludeElem && container.parentNode.contains(excludeElem)) {
+        const exRect = excludeElem.getBoundingClientRect();
+        const contRect = container.getBoundingClientRect();    // コンテナ内の相対座標に変換
+    excludeBox = {
+        x: exRect.left - contRect.left - 20, // -20は余白（余裕を持たせる）
+        y: exRect.top - contRect.top - 20,
+        width: exRect.width + 40,
+        height: exRect.height + 40
+    };
+}　
+
+    // 写真の位置とサイズを正確に記録する専用のリスト
+    const placedData = []; 
+    const maxAttempts = 1000;
+
+    photoUrls.forEach(url => {
+        let isPlaced = false;
+        let finalX = 0, finalY = 0, finalSize = 0;
+
+        for (let i = 0; i < maxAttempts; i++) {
+            // 写真のサイズを 100px 〜 180px に設定（複数枚入りやすいように調整）
+            // ★ 1. Math.random() を seededRandom() に置き換え
+			const size = Math.floor(seededRandom() * 80) + 100;
+	
+
+            // 配置可能なエリアを計算
+            const availableWidth = container.clientWidth - size;
+            const availableHeight = container.clientHeight - size;
+
+            if (availableWidth <= 0 || availableHeight <= 0) break;
+
+
+			// ★ 1. 配置位置も seededRandom() に置き換え
+			const x = seededRandom() * availableWidth;
+			const y = seededRandom() * availableHeight;
+	
+            
+            // 他の写真との重なりチェック
+            let isOverlapping = false;
+			// 【追加】テキスト領域（除外領域）との重なり判定（矩形同士の当たり判定）
+			if (excludeBox) {
+			    if (
+			        x < excludeBox.x + excludeBox.width &&
+			        x + size > excludeBox.x &&
+			        y < excludeBox.y + excludeBox.height &&
+			        y + size > excludeBox.y
+			    ) {
+			        isOverlapping = true;
+			    }
+			}
+
+            for (let j = 0; j < placedData.length; j++) {
+                const rect = placedData[j];
+                // 正しく記録されたデータを使って判定（10pxの隙間）
+                if (!(x + size + 10 < rect.x || 
+                      x > rect.x + rect.size + 10 || 
+                      y + size + 10 < rect.y || 
+                      y > rect.y + rect.size + 10)) {
+                    isOverlapping = true;
+                    break;
+                }
+            }
+
+            if (!isOverlapping) {
+                isPlaced = true;
+                finalX = x;
+                finalY = y;
+                finalSize = size;
+                // ★バグ修正：画像の要素ではなく「座標とサイズ」だけを正確に記録する
+                placedData.push({ x: finalX, y: finalY, size: finalSize });
+                break;
+            }
+        }
+
+        // ★新機能：どうしても重ならない場所が見つからなかった場合でも、諦めずに「少し重ねて強制表示」させる
+        if (!isPlaced) {
+            finalSize = 120; // 隙間がない場合は少し小さめにする
+            // マイナス値にならないように Math.max を使用
+            finalX = seededRandom() * Math.max(0, container.clientWidth - finalSize);
+            finalY = seededRandom() * Math.max(0, container.clientHeight - finalSize);placedData.push({ x: finalX, y: finalY, size: finalSize });
+            isPlaced = true;
+        }
+
+        // 画像を生成してページに貼り付ける
+        if (isPlaced) {
+            const img = document.createElement("img");
+            img.src = url;
+            img.classList.add("random-photo");
+            
+            // ★ 3. 切手を微妙にランダムに傾ける機能を追加（これもseedによる）
+            // 例：-15度から15度の範囲で傾ける
+            const angle = (seededRandom() * 30) - 15;
+            // 既存のCSSアニメーション(transform)と競合しないよう rotate プロパティを使用します
+            img.style.rotate = `${angle}deg`;
+            img.style.position = "absolute"; 
+            img.style.width = `${finalSize}px`;
+            img.style.height = `${finalSize}px`;
+            img.style.left = `${finalX}px`;
+            img.style.top = `${finalY}px`;
+            img.style.objectFit = "cover";
+            img.style.boxShadow = "2px 2px 8px rgba(0,0,0,0.3)"; // 影をつけて立体感を出す
+            img.style.zIndex = "1"; // 文字の後ろに配置
+            img.style.borderRadius = "4px"; // 写真の角をほんの少し丸くする（お好みで）
+            
+            container.appendChild(img);
+        }
+    });
+}
+document.addEventListener("DOMContentLoaded", () => {
+    
+    // HTML内で "auto-slideshow" クラスが付いたすべての画像を自動取得
+    const slideshowElements = document.querySelectorAll(".auto-slideshow");
+
+    slideshowElements.forEach(slideImg => {
+        // HTMLの data-images 属性から文字列を取得
+        const rawImages = slideImg.getAttribute("data-images");
+        if (!rawImages) return; // 指定がない場合は何もしない
+
+        // カンマ区切りの文字列を配列に変換（前後の余白も削除）
+        const images = rawImages.split(",").map(url => url.trim());
+        if (images.length === 0) return;
+
+        // HTMLの data-interval 属性から時間を取得（指定がなければ4000ミリ秒）
+        const intervalAttr = slideImg.getAttribute("data-interval");
+        const interval = intervalAttr ? parseInt(intervalAttr, 10) : 4000;
+
+        let currentIndex = 0;
+        
+        // ふんわり切り替わるアニメーション設定
+        slideImg.style.transition = "opacity 0.5s ease-in-out";
+
+        // スライドショーの実行ループ
+        setInterval(() => {
+            slideImg.style.opacity = 0; // フェードアウト
+            
+            setTimeout(() => {
+                currentIndex = (currentIndex + 1) % images.length;
+                slideImg.src = images[currentIndex];
+                slideImg.style.opacity = 1; // フェードイン
+            }, 500); // 0.5秒後に画像切り替え
+            
+        }, interval);
+    });
+
+});
+
+
+
+
+
+    </script>
+</body>
+</html>
