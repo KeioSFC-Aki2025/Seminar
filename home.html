@@ -1059,6 +1059,39 @@ background-color: #ffffff;
     padding-bottom: 20px;
     gap: 15px;
   }
+  
+  /* ------------------------------------- */
+  /* 8. ヘッダーをスマホサイズにキュッと縮小 */
+  /* ------------------------------------- */
+  
+  /* ヘッダー全体の余白を詰める */
+  header {
+    padding: 10px 15px !important; /* 上下の余白を大幅にカット */
+    height: auto !important; 
+    min-height: 0 !important;
+  }
+
+  /* サイトタイトル（ロゴ文字）を小さくする */
+  header h1, header .logo {
+    font-size: 20px !important; /* パソコンより二回りほど小さく */
+    margin: 5px 0 !important; /* タイトル周りの無駄な余白を詰める */
+    line-height: 1.2 !important;
+  }
+
+  /* もしヘッダー内にナビゲーションメニューがある場合の調整 */
+  header nav {
+    margin-top: 5px !important;
+  }
+
+  header nav ul {
+    gap: 10px !important; /* メニュー同士の隙間を狭くする */
+    justify-content: center !important; /* 中央にキュッとまとめる */
+  }
+
+  header nav a {
+    font-size: 14px !important; /* メニューの文字も少し小さくして圧迫感をなくす */
+    padding: 5px !important;
+  }
 }
     </style>
 </head>
