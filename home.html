@@ -971,7 +971,95 @@ background-color: #ffffff;
     padding: 2px;
     border-radius: 2px;
 }
+/* =================================================== */
+/* --- スマホ専用：本の仕組みを解除して洗練された縦スクロールへ --- */
+/* =================================================== */
+@media screen and (max-width: 768px) {
+  
+  /* 1. スマホ表示では本の3D空間と固定サイズを完全にリセット */
+  .hero-section {
+    perspective: none !important;
+    min-height: auto !important;
+    height: auto !important;
+    padding: 20px 15px !important; /* スマホの両端に少し余白を作る */
+  }
 
+  .book {
+    width: 100% !important;
+    height: auto !important;
+    transform: none !important;
+    margin: 0 !important;
+  }
+
+  /* 2. ページ群を「縦一列」に並べる */
+  #pagesContainer {
+    transform-style: flat !important;
+    display: flex !important;
+    flex-direction: column !important;
+  }
+
+  /* 3. めくるための重なり（絶対配置）を解除し、通常のブロックにする */
+  .page {
+    position: relative !important;
+    width: 100% !important;
+    height: auto !important;
+    left: 0 !important;
+    transform: none !important;
+    transition: none !important; /* めくるアニメーションを無効化 */
+  }
+
+  /* 4. 裏表のページを分割し、モダンな「カード型」にして縦に並べる */
+  .page-front, .page-back {
+    position: relative !important;
+    transform: none !important;
+    width: 100% !important;
+    height: auto !important;
+    backface-visibility: visible !important;
+    -webkit-backface-visibility: visible !important;
+    
+    /* 洗練されたスマホ向けカードデザイン */
+    border: none !important;
+    border-radius: 15px !important; /* 角を丸くして今っぽく */
+    box-shadow: 0 4px 15px rgba(0,0,0,0.08) !important; /* 柔らかい影で浮かせる */
+    margin-bottom: 25px !important; /* ページ（カード）ごとの隙間 */
+    overflow: hidden; /* はみ出し防止 */
+  }
+
+  /* 裏面のコンテンツ（元々は透けないよう透明化されている）を常に表示 */
+  .page-back > * {
+    opacity: 1 !important;
+    transition: none !important;
+  }
+
+  /* 5. 内部要素（ノートの罫線や余白など）の調整 */
+  .page.inner-page {
+    width: 100% !important;
+  }
+  
+  .notebook-lines {
+    height: auto !important;
+    padding: 20px 15px !important; /* スマホ用に余白を最適化 */
+  }
+
+  /* 6. スマホの縦スクロールに不要な装飾・ボタン・飛び交う写真をすべて隠す */
+  .nav-arrow,
+  #book-prev-btn,
+  #book-next-btn,
+  .bookmark,
+  .book-spine-3d,
+  .return-btn,
+  .random-photo {
+    display: none !important;
+  }
+  
+  /* 7. 本棚もスマホ幅に合わせて折り返すように調整 */
+  .bookshelf-section {
+    flex-wrap: wrap;
+    height: auto !important;
+    padding-bottom: 20px;
+    gap: 15px;
+  }
+}
     </style>
 </head>
 <body>
