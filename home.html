@@ -1107,7 +1107,8 @@ background-color: #ffffff;
             <div class="gnav-dropdown">
                 <a href="https://ayamada.sfc.keio.ac.jp/%E8%A4%87%E8%A3%BD-issues-in-theoretical-linguistics-1"><span class="lang-ja">授業</span><span class="lang-en">TEACHING</span></a>
                 <div class="gnav-dropdown-content">
-                    <a href="https://keiosfc-aki2025.github.io/morphology/schedule.html"><span class="lang-ja">音声学・音韻論・形態論<br>（Project Eng C）</span> <span class="lang-en">Phonetics, Phonology, and Morphology (GIGA)</span></a>
+                    <a href="https://keiosfc-aki2025.github.io/corpusLinguistics/schedule.html"><span class="lang-ja">コーパス言語学<br>（Project Eng C）</span> <span class="lang-en">Corpus Linguistics (GIGA)</span></a>
+					<a href="https://keiosfc-aki2025.github.io/morphology/schedule.html"><span class="lang-ja">音声学・音韻論・形態論<br>（Project Eng C）</span> <span class="lang-en">Phonetics, Phonology, and Morphology (GIGA)</span></a>
                     <a href="https://keiosfc-aki2025.github.io/syntax/schedule.html"><span class="lang-ja">統語論</span><span class="lang-en">Syntax (GIGA)</span></a>
                     <a href="https://keiosfc-aki2025.github.io/semantics-and-pragmatics/schedule.html"><span class="lang-ja">意味論・語用論<br>（学部・大学院併設）</span> <span class="lang-en">Semantics and Pragmatics</span></a>
                 </div>
@@ -1153,8 +1154,10 @@ background-color: #ffffff;
 			<button id="book-next-btn" class="nav-arrow right-arrow">⇒</button>
 		
             <div id="heroBook" class="book">
-                <div id="bookmark" class="bookmark">▶ 再開</div>
-                <div id="returnBtn" class="return-btn">本棚に戻す</div>
+                <div id="bookmark" class="bookmark">▶ <span class="lang-ja">再開</span>							
+						<span class="lang-en"></span></div>
+                <div id="returnBtn" class="return-btn"><span class="lang-ja">本棚に戻す</span>							
+						<span class="lang-en">Shelf</span></div>
                 <div class="book-spine-3d"></div>
                 
                 <div id="pagesContainer"></div>
@@ -1683,38 +1686,145 @@ background-color: #ffffff;
 
 
             <div id="book3">
-                <div class="page" id="cover" style="z-index: 4;">
-                    <div class="page-front cover-bg" style="display:flex; flex-direction:column; align-items:center; justify-content:center; text-align:center;">
-                        <h2 style="padding: 20px; font-size: 1.8rem; margin:0; text-shadow: 2px 2px 4px rgba(0,0,0,0.2);">大学院受験を<br>考えている方へ</h2>
-                    </div>
-                    <div class="page-back cover-inner" style="display:flex; align-items:center; justify-content:center;">
-                        <p style="font-size: 1.5rem; font-weight: bold; color: var(--text-color);">Welcome!</p>
-                    </div>
-                </div>
-                <div class="page inner-page" id="p1" style="z-index: 3;">
-                    <div class="page-front notebook-lines" style="padding:20px;">
-                        <h3>入試情報</h3>
-                        <p>慶應のHPをご覧ください。</p>
-                    </div>
+                <!-- 表紙カバー -->
+<div class="page" id="cover" style="z-index: 5;">
+    <div class="page-front cover-bg" style="display:flex; flex-direction:column; align-items:center; justify-content:center; text-align:center;">
+        <h2 style="padding: 20px; font-size: 1.8rem; margin:0; text-shadow: 2px 2px 4px rgba(0,0,0,0.2);">
+            <span class="lang-ja">大学院受験を<br>考えている方へ</span>						
+            <span class="lang-en">For Prospective Graduate Students</span>
+        </h2>
+    </div>
+    <div class="page-back cover-inner" style="display:flex; align-items:center; justify-content:center;">
+        <p style="font-size: 1.5rem; font-weight: bold; color: var(--text-color);">Welcome!</p>
+    </div>
+</div>
+
+<!-- 1ページ目 -->
+<div class="page inner-page" id="p1" style="z-index: 4;">
+    <div class="page-front notebook-lines" style="padding:20px;">
+        <!-- 1ページ目（右）のコンテンツがあればここに記述 -->
+    </div>
+    <div class="page-back" style="padding:20px;">
+        <div class="title-triangle" style="--tri-color: #fff5f7;"></div>
+        <h3><b><span class="lang-ja">教員にコンタクトを取る前に</span>						
+        <span class="lang-en">Before contacting me...</span></b></h3>
+        <div class="photo-frame" id="slideshow">
+            <img src="https://keiosfc-aki2025.github.io/Seminar/welcome1.png" class="slide active">
+        </div><br>
+        <h3><span class="lang-ja">入試情報</span>							
+        <span class="lang-en">Application</span></h3>
+        <p><span class="lang-ja">事務的なことについては、まず慶應のHPをご覧ください。</span>							
+        <span class="lang-en">First and foremost, please take a look at the official admission policy:</span></p>
+        <span class="lang-ja">
+            <a href="https://www.keio.ac.jp/ja/admissions/grad/master/gsmg/">🔍修士課程入学</a><br>
+            <a href="https://www.keio.ac.jp/ja/admissions/grad/doctoral/gsmg/">🔍博士課程入学</a>
+        </span>							
+        <span class="lang-en">
+            <a href="https://www.keio.ac.jp/en/admissions/grad/master/gsmg/">🔍Master's Program</a><br>
+            <a href="https://www.keio.ac.jp/en/admissions/grad/doctoral/gsmg/">🔍Doctoral Program</a>
+        </span>	
+    </div>
+</div>
+
+<!-- 2ページ目 -->
+<div class="page inner-page" id="p2" style="z-index: 3;">
+    <div class="page-front notebook-lines" style="padding:20px;">
+        <h3><span class="lang-ja">研究計画書について</span>						
+        <span class="lang-en">Application Documents</span></h3>
+        <span class="lang-ja">
+            SFCでは、大学院の出願にあたっては、まず事前に教員にコンタクトを取り、指導教官に仰ぎたい人が受け入れ教員になってくれるかどうかを確認する必要があります。私にこのコンタクトを取る際には、次の3点をメールで添付の上ご連絡ください。<br><br>
+
+            ① <font color="#4F8A70" style="font-size: 20px;"><b>履歴書</b></font>：<br>これまでの自分の経歴や業績をまとめた書類です（様式任意）。<br><br>
+
+            ② <font color="#4169e1" style="font-size: 20px;"><b>研究計画書</b></font>：<br>大学院で行いたいと考えている計画書です（様式任意）。具体的な先行研究に言及し、それを踏まえ自分がどのような研究をしたいと思っているかを、具体的に説明してください。<br><br>
+
+            ③ <font color="#c71585" style="font-size: 20px;"><b>マッチングシート</b></font>：<br>SFCや本研究会と、出願者の方がやりたいことがマッチしているかを測るための<a href="https://keiosfc-aki2025.github.io/Seminar/Application_Form.docx"><b>質問票</b></a>です。<br>
+        </span>						
+        <span class="lang-en">
+            At SFC, applicants to the graduate school must contact a faculty member in advance to confirm whether they can serve as their academic advisor. When contacting me, please attach the following three documents to your email:<br><br>
+            
+            1. <font color="#4F8A70" style="font-size: 20px;"><b>Curriculum Vitae (CV)</b></font>: A document summarizing your background, academic history, and accomplishments (free format). <br><br>
+            2. <font color="#4169e1" style="font-size: 20px;"><b>Research Proposal</b></font>: A proposal outlining the research you intend to conduct in the graduate school (free format). Please reference specific prior studies and explain as concretely as possible what research you wish to pursue based on that literature. <br><br>
+            3. <font color="#c71585" style="font-size: 20px;"><b>Matching Sheet</b></font>: A <a href="https://keiosfc-aki2025.github.io/Seminar/Application_Form.docx"><b>questionnaire</b></a> designed to assess whether your goals align with SFC and this research group.
+        </span>	
+    </div>
+                    <!--- ２ページ目（左） ---------------------------------> 
                     <div class="page-back" style="padding:20px;">
-                        <p>TBA</p>
+　	　				　　 <div class="title-triangle" style="--tri-color: #fff5f7;"></div>					　　
+                        <h3><b><span class="lang-ja">言語学 vs. 語学</span>						
+						<span class="lang-en">Linguistics vs. Language Skills</span></b></h3>
+						<div class="photo-frame" id="slideshow">
+							<img src="https://keiosfc-aki2025.github.io/Seminar/welcome2.png" class="slide active" >
+						</div><br>
+						
                     </div>
+                    
                 </div>
-                <div class="page inner-page" id="p2" style="z-index: 2;">
+				<div class="page inner-page" id="p2" style="z-index: 2;">
                     <div class="page-front notebook-lines" style="padding:20px;">
-                        <h3>研究計画書について</h3>
-                        <p>TBA</p>
+                        <h3><span class="lang-ja">よくある勘違い</span>							
+						<span class="lang-en">A common misunderstanding</span>	</h3>
+						<span class="lang-ja">
+						「これまで私は日本語を一生懸命勉強してきた。<font color = "#bc5148" style="font-size: 20px;"><b>語学力</b></font>には自信がある。だから、<font color="#4F8A70" style="font-size: 20px;"><b>言語学</b></font>を専門にしていいる先生を探していました！先生、よろしくお願いします！」<br><br>
+						
+						ちょっと待ってください！<font color="#4F8A70"><b>言語学</b></font>と<font color = "#bc5148"><b>語学</b></font>は全く違います。<br><br>
+						「自分には<font color = "#bc5148">人生（歴史）</font>があるから、<font color="#4F8A70">歴史学</font>ができると思います」と考えるのが変なのと同じくらい、大きな勘違いです。
+						<br><br>
+						私は、定量的・定性的な研究手法を使う言語学者です。ですので、応募の前に、そもそも言語学とは何か確認し、それが自分がやりたいと思っていることとマッチしているのかを熟慮してから、アプライしてください。
+						
+						</span>							
+						<span class="lang-en">
+						“I’ve been studying Japanese very hard for years, and I’m confident in my <font color = "#bc5148" style="font-size: 20px;"><b>language skills</b></font>. So, I was looking for a professor who specializes in <font color="#4F8A70" style="font-size: 20px;"><b>Linguistics</b></font>! Hey, I look forward to working with you!” <br><br>
+Hold on! <font color="#4F8A70"><b>Linguistics</b></font> and <font color="#bc5148"><b>language learning</b></font> are two completely different things.
+They are about as different as thinking, “Hey, I have a life (a <font color="#bc5148"><b>life history</b></font>), so I should be able to major in <font color="#4F8A70"><b>history</b></font>.”
+<br><br>
+Using both quantitative and qualitative research methods, I study <font color="#4F8A70" style="font-size: 20px;"><b>linguistics</b></font>! <br><br>So, before you apply, please take some time to make sure you understand <b>what linguistics actually is</b> and carefully consider whether it really matches what you want to study.
+
+						</span>							
+
+                        
                     </div>
-                    <div class="page-back" style="padding:20px;">
-                        <p></p>
+                    <!--- ２ページ目（左） ---------------------------------> 
+<div class="page-back" style="padding:20px;">
+ 	 				 <div class="title-triangle" style="--tri-color: #fff5f7;"></div> 
+                        <h3><b><span class="lang-ja">SFCに向いている人／いない人</span>						
+						<span class="lang-en">Who Is (and Isn't) a Good Fit for SFC</span></b></h3>
+						<div class="photo-frame" id="slideshow">
+							<img src="https://keiosfc-aki2025.github.io/Seminar/welcome3.png" class="slide active" >
+						</div><br>
+						
+                        <p><span class="lang-ja">すべての人がSFCに向いているってわけじゃない。自分に合う研究科を探そう！</span>							
+						<span class="lang-en">SFC isn't for everyone. Find the graduate school that best suits you!</span></p>	
+						
+						
                     </div>
                 </div>
                 <div class="page" id="p3" style="z-index: 1;">
-                    <div class="page-front cover-inner" style="display:flex; align-items:center; justify-content:center;">
-                        
+                    <div class="page-front cover-inner" style="display:flex; align-items:center; justify-content:center; padding:20px;">
+						<span class="lang-ja">
+							言語学の研究者は、日本にも世界にもたくさんいます。もし、言語学「<font color="#ee82ee"><b>だけ</b></font>」をとことん深めたいという場合は、SFCはベストではないかもしれません。言語学研究科というように、所属教員がすべて言語学者という研究科に在籍をした方が、言語学という領域の知識や技術はおそらくより効率よく手に入れられるでしょう。<br><br>
+							
+							一方で、SFCの研究科に在籍することのメリットは、「<font color="#bc5148"><b>言語学と○○</b></font>」という異分野の掛け合わせを楽しめることです。「言語学と法学／歴史学／脳科学／数学／心理学…」などです。
+							<br><br>
+							狭義の言語学に関しては、私と語らいましょう。言語学としての専門もしっかり鍛えます。ですが、それに加えて他のSFCの研究者の方々と交流し、言語学を創発的に越えていく異分野連携を実現する第二の軸を持つ、「二刀流」を志す方にSFCは向いています。私自身、<font color="#00bfff" style="font-size: 20px;"><b>デジタルヒューマニティーズ</b></font>と<font color="#4F8A70" style="font-size: 20px;"><b>理論言語学</b></font>という二つのフィールドを行き来する研究者です。言語学だけをするのに比べると二倍大変です。でもその分、豊かなことばの世界を探検できます。そんなことに興味を持つ方の応募をお待ちしています。
+						</span>
+						<span class="lang-en">
+							There are many linguistics researchers around the world. If you want to dive deeply into <font color="#ee82ee"><b>linguistics only</b></font>, SFC might not be the best fit for you. You should find a Department of Linguistics, where all faculty members are linguists.<br><br>
+											
+					
+							
+							
+							On the other hand, the unique advantage of studying at SFC is the opportunity to enjoy interdisciplinary combinations—"<font color="#bc5148"><b>Linguistics and [X]</b></font>": Linguistics and Law, History, Neuroscience, Mathematics, Music... anything you want.<br><br>
+							
+							As for linguistics, you can rely on me. Beyond that, you may aim for a "dual-track" scholarly path—building a strong second academic pillar by interacting with researchers across SFC to achieve creative, interdisciplinary synergies. I myself am a researcher navigating between <font color="#00bfff" style="font-size: 20px;"><b>Digital Humanities</b></font> and <font color="#4F8A70" style="font-size: 20px;"><b>theoretical linguistics</b></font>. It is twice as demanding as doing linguistics alone, but in return, it opens up a remarkably rich world of language to explore. If this approach resonates with you, I look forward to receiving your application.
+							
+						</span>
                     </div>
                     <div class="page-back cover-bg"></div>
                 </div>
+				
+				
+				
             </div>
         </div>
     </main>
